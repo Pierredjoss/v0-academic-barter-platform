@@ -21,6 +21,11 @@ CREATE TABLE IF NOT EXISTS public.profiles (
 
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "profiles_select_all" ON public.profiles;
+DROP POLICY IF EXISTS "profiles_insert_own" ON public.profiles;
+DROP POLICY IF EXISTS "profiles_update_own" ON public.profiles;
+DROP POLICY IF EXISTS "profiles_delete_own" ON public.profiles;
+
 CREATE POLICY "profiles_select_all" ON public.profiles FOR SELECT USING (true);
 CREATE POLICY "profiles_insert_own" ON public.profiles FOR INSERT WITH CHECK (auth.uid() = id);
 CREATE POLICY "profiles_update_own" ON public.profiles FOR UPDATE USING (auth.uid() = id);
@@ -37,6 +42,7 @@ CREATE TABLE IF NOT EXISTS public.categories (
 );
 
 ALTER TABLE public.categories ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "categories_select_all" ON public.categories;
 CREATE POLICY "categories_select_all" ON public.categories FOR SELECT USING (true);
 
 -- Insert default categories
@@ -71,6 +77,11 @@ CREATE TABLE IF NOT EXISTS public.listings (
 
 ALTER TABLE public.listings ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "listings_select_all" ON public.listings;
+DROP POLICY IF EXISTS "listings_insert_own" ON public.listings;
+DROP POLICY IF EXISTS "listings_update_own" ON public.listings;
+DROP POLICY IF EXISTS "listings_delete_own" ON public.listings;
+
 CREATE POLICY "listings_select_all" ON public.listings FOR SELECT USING (true);
 CREATE POLICY "listings_insert_own" ON public.listings FOR INSERT WITH CHECK (auth.uid() = user_id);
 CREATE POLICY "listings_update_own" ON public.listings FOR UPDATE USING (auth.uid() = user_id);
@@ -97,6 +108,9 @@ CREATE TABLE IF NOT EXISTS public.conversation_participants (
 );
 
 ALTER TABLE public.conversation_participants ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "conversation_participants_select_own" ON public.conversation_participants;
+DROP POLICY IF EXISTS "conversation_participants_insert_own" ON public.conversation_participants;
 
 CREATE POLICY "conversation_participants_select_own" ON public.conversation_participants 
   FOR SELECT USING (auth.uid() = user_id);
@@ -128,6 +142,10 @@ CREATE TABLE IF NOT EXISTS public.exchanges (
 
 ALTER TABLE public.exchanges ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "exchanges_select_own" ON public.exchanges;
+DROP POLICY IF EXISTS "exchanges_insert_own" ON public.exchanges;
+DROP POLICY IF EXISTS "exchanges_update_own" ON public.exchanges;
+
 CREATE POLICY "exchanges_select_own" ON public.exchanges 
   FOR SELECT USING (auth.uid() = giver_id OR auth.uid() = receiver_id);
 CREATE POLICY "exchanges_insert_own" ON public.exchanges 
@@ -149,6 +167,9 @@ CREATE TABLE IF NOT EXISTS public.reviews (
 
 ALTER TABLE public.reviews ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "reviews_select_all" ON public.reviews;
+DROP POLICY IF EXISTS "reviews_insert_own" ON public.reviews;
+
 CREATE POLICY "reviews_select_all" ON public.reviews FOR SELECT USING (true);
 CREATE POLICY "reviews_insert_own" ON public.reviews FOR INSERT WITH CHECK (auth.uid() = reviewer_id);
 
@@ -163,11 +184,18 @@ CREATE TABLE IF NOT EXISTS public.favorites (
 
 ALTER TABLE public.favorites ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "favorites_select_own" ON public.favorites;
+DROP POLICY IF EXISTS "favorites_insert_own" ON public.favorites;
+DROP POLICY IF EXISTS "favorites_delete_own" ON public.favorites;
+
 CREATE POLICY "favorites_select_own" ON public.favorites FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "favorites_insert_own" ON public.favorites FOR INSERT WITH CHECK (auth.uid() = user_id);
 CREATE POLICY "favorites_delete_own" ON public.favorites FOR DELETE USING (auth.uid() = user_id);
 
 -- RLS policies for conversations (users can see conversations they're part of)
+DROP POLICY IF EXISTS "conversations_select_participant" ON public.conversations;
+DROP POLICY IF EXISTS "conversations_insert_any" ON public.conversations;
+
 CREATE POLICY "conversations_select_participant" ON public.conversations 
   FOR SELECT USING (
     EXISTS (
@@ -180,6 +208,9 @@ CREATE POLICY "conversations_insert_any" ON public.conversations
   FOR INSERT WITH CHECK (true);
 
 -- RLS policies for messages (users can see messages in their conversations)
+DROP POLICY IF EXISTS "messages_select_participant" ON public.messages;
+DROP POLICY IF EXISTS "messages_insert_own" ON public.messages;
+
 CREATE POLICY "messages_select_participant" ON public.messages 
   FOR SELECT USING (
     EXISTS (
