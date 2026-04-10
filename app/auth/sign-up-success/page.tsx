@@ -37,24 +37,24 @@ export default function SignUpSuccessPage() {
               <Mail className="h-10 w-10 text-primary" />
             </motion.div>
 
-            <h1 className="text-2xl font-bold">Check Your Email</h1>
+            <h1 className="text-2xl font-bold">Vérifiez Votre Email</h1>
             <p className="mt-4 text-muted-foreground leading-relaxed">
-              We&apos;ve sent a confirmation link to your email address. 
-              Please click the link to verify your account and complete registration.
+              Nous avons envoyé un lien de confirmation à votre adresse email. 
+              Veuillez cliquer sur le lien pour vérifier votre compte et terminer l&apos;inscription.
             </p>
 
             <div className="mt-8 space-y-4">
               <Button asChild className="w-full gap-2">
                 <Link href="/auth/login">
-                  Go to Login
+                  Aller à la Connexion
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
               
               <p className="text-sm text-muted-foreground">
-                Didn&apos;t receive the email?{" "}
+                Vous n&apos;avez pas reçu l&apos;email ?{" "}
                 <button className="font-medium text-primary hover:underline">
-                  Resend
+                  Renvoyer
                 </button>
               </p>
             </div>
@@ -66,7 +66,7 @@ export default function SignUpSuccessPage() {
               href="/"
               className="text-sm text-muted-foreground hover:text-foreground"
             >
-              &larr; Back to home
+              &larr; Retour à l&apos;accueil
             </Link>
           </div>
         </motion.div>

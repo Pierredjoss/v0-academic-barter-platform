@@ -37,23 +37,23 @@ export default function AuthErrorPage() {
               <AlertTriangle className="h-10 w-10 text-destructive" />
             </motion.div>
 
-            <h1 className="text-2xl font-bold">Authentication Error</h1>
+            <h1 className="text-2xl font-bold">Erreur d&apos;Authentification</h1>
             <p className="mt-4 text-muted-foreground leading-relaxed">
-              Something went wrong during the authentication process. 
-              This could be due to an expired link or an invalid request.
+              Une erreur s&apos;est produite lors du processus d&apos;authentification. 
+              Cela peut être dû à un lien expiré ou une requête invalide.
             </p>
 
             <div className="mt-8 flex flex-col gap-3">
               <Button asChild className="w-full gap-2">
                 <Link href="/auth/login">
-                  Try Again
+                  Réessayer
                   <RefreshCw className="h-4 w-4" />
                 </Link>
               </Button>
               
               <Button variant="outline" asChild className="w-full gap-2">
                 <Link href="/">
-                  Go Home
+                  Retour à l&apos;Accueil
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -63,9 +63,9 @@ export default function AuthErrorPage() {
           {/* Support link */}
           <div className="mt-6">
             <p className="text-sm text-muted-foreground">
-              Need help?{" "}
+              Besoin d&apos;aide ?{" "}
               <Link href="/contact" className="text-primary hover:underline">
-                Contact Support
+                Contacter le Support
               </Link>
             </p>
           </div>

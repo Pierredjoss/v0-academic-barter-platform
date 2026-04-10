@@ -15,10 +15,10 @@ export default async function SettingsPage() {
     <div className="mx-auto max-w-2xl space-y-6">
       <div className="space-y-1">
         <h1 className="text-2xl font-bold sm:text-3xl">
-          <span className="gradient-text">Settings</span>
+          <span className="gradient-text">Paramètres</span>
         </h1>
         <p className="text-muted-foreground">
-          Manage your account and preferences
+          Gérez votre compte et vos préférences
         </p>
       </div>
 

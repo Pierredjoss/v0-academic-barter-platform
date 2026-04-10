@@ -13,8 +13,8 @@ import {
 const categories = [
   {
     icon: BookOpen,
-    name: "Books",
-    nameFr: "Livres",
+    name: "Livres",
+    description: "Manuels et ouvrages",
     count: "3.2K+",
     color: "bg-violet-500",
     bgColor: "bg-violet-500/10",
@@ -22,8 +22,8 @@ const categories = [
   },
   {
     icon: FileText,
-    name: "Past Exams",
-    nameFr: "Épreuves",
+    name: "Épreuves",
+    description: "Examens passés",
     count: "1.8K+",
     color: "bg-cyan-500",
     bgColor: "bg-cyan-500/10",
@@ -31,8 +31,8 @@ const categories = [
   },
   {
     icon: FlaskConical,
-    name: "Lab Materials",
-    nameFr: "Matériaux",
+    name: "Matériaux",
+    description: "Équipements de labo",
     count: "950+",
     color: "bg-emerald-500",
     bgColor: "bg-emerald-500/10",
@@ -40,8 +40,8 @@ const categories = [
   },
   {
     icon: GraduationCap,
-    name: "Courses",
-    nameFr: "Cours",
+    name: "Cours",
+    description: "Supports de cours",
     count: "2.1K+",
     color: "bg-amber-500",
     bgColor: "bg-amber-500/10",
@@ -50,7 +50,7 @@ const categories = [
   {
     icon: NotebookPen,
     name: "Notes",
-    nameFr: "Notes",
+    description: "Notes de cours",
     count: "4.5K+",
     color: "bg-pink-500",
     bgColor: "bg-pink-500/10",
@@ -58,8 +58,8 @@ const categories = [
   },
   {
     icon: Package,
-    name: "Other",
-    nameFr: "Autre",
+    name: "Autre",
+    description: "Divers",
     count: "780+",
     color: "bg-indigo-500",
     bgColor: "bg-indigo-500/10",
@@ -82,12 +82,12 @@ export function LandingCategories() {
           className="mx-auto max-w-2xl text-center"
         >
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Browse by{" "}
-            <span className="gradient-text">Category</span>
+            Parcourir par{" "}
+            <span className="gradient-text">Catégorie</span>
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            From textbooks to lab equipment, find exactly what you need 
-            for your academic journey.
+            Des manuels aux équipements de laboratoire, trouvez exactement ce dont vous avez besoin 
+            pour votre parcours académique.
           </p>
         </motion.div>
 
@@ -115,11 +115,11 @@ export function LandingCategories() {
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold">{category.name}</h3>
-                  <p className="text-sm text-muted-foreground">{category.nameFr}</p>
+                  <p className="text-sm text-muted-foreground">{category.description}</p>
                 </div>
                 <div className="text-right">
                   <span className="text-2xl font-bold">{category.count}</span>
-                  <p className="text-xs text-muted-foreground">listings</p>
+                  <p className="text-xs text-muted-foreground">annonces</p>
                 </div>
               </div>
             </motion.div>

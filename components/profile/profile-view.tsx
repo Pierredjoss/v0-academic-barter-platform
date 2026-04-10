@@ -6,7 +6,6 @@ import {
   MapPin, 
   GraduationCap, 
   Star, 
-  Repeat, 
   Calendar,
   Settings,
   Plus,
@@ -54,11 +53,11 @@ interface ProfileViewProps {
 
 export function ProfileView({ profile, listings, listingsCount, reviews }: ProfileViewProps) {
   const memberSince = profile?.created_at
-    ? new Date(profile.created_at).toLocaleDateString("en-US", {
+    ? new Date(profile.created_at).toLocaleDateString("fr-FR", {
         month: "long",
         year: "numeric",
       })
-    : "Unknown"
+    : "Inconnu"
 
   return (
     <div className="space-y-6">
@@ -86,14 +85,14 @@ export function ProfileView({ profile, listings, listingsCount, reviews }: Profi
             <Button variant="outline" size="sm" asChild className="gap-1">
               <Link href="/settings">
                 <Settings className="h-4 w-4" />
-                Edit Profile
+                Modifier le Profil
               </Link>
             </Button>
           </div>
 
           {/* Info */}
           <div className="mt-8 sm:mt-4">
-            <h1 className="text-2xl font-bold">{profile?.full_name || "Student"}</h1>
+            <h1 className="text-2xl font-bold">{profile?.full_name || "Étudiant"}</h1>
             
             <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
               {profile?.university && (
@@ -110,7 +109,7 @@ export function ProfileView({ profile, listings, listingsCount, reviews }: Profi
               )}
               <span className="flex items-center gap-1">
                 <Calendar className="h-4 w-4" />
-                Joined {memberSince}
+                Membre depuis {memberSince}
               </span>
             </div>
 
@@ -122,16 +121,16 @@ export function ProfileView({ profile, listings, listingsCount, reviews }: Profi
             <div className="mt-6 flex gap-6">
               <div className="text-center">
                 <p className="text-2xl font-bold">{listingsCount}</p>
-                <p className="text-xs text-muted-foreground">Listings</p>
+                <p className="text-xs text-muted-foreground">Annonces</p>
               </div>
               <div className="text-center">
                 <p className="text-2xl font-bold">{profile?.total_exchanges || 0}</p>
-                <p className="text-xs text-muted-foreground">Exchanges</p>
+                <p className="text-xs text-muted-foreground">Échanges</p>
               </div>
               <div className="flex items-center gap-1 text-center">
                 <Star className="h-5 w-5 fill-amber-400 text-amber-400" />
                 <p className="text-2xl font-bold">{profile?.average_rating?.toFixed(1) || "0.0"}</p>
-                <p className="text-xs text-muted-foreground">Rating</p>
+                <p className="text-xs text-muted-foreground">Note</p>
               </div>
             </div>
           </div>
@@ -141,18 +140,18 @@ export function ProfileView({ profile, listings, listingsCount, reviews }: Profi
       {/* Listings */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold">My Listings</h2>
+          <h2 className="text-xl font-bold">Mes Annonces</h2>
           <div className="flex gap-2">
             <Button variant="outline" size="sm" asChild className="gap-1">
               <Link href="/publish">
                 <Plus className="h-4 w-4" />
-                Add New
+                Ajouter
               </Link>
             </Button>
             {listingsCount > 6 && (
               <Button variant="ghost" size="sm" asChild className="gap-1">
                 <Link href="/my-listings">
-                  View All
+                  Voir Tout
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -174,9 +173,9 @@ export function ProfileView({ profile, listings, listingsCount, reviews }: Profi
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-muted/30 py-12">
-            <p className="mb-4 text-muted-foreground">No listings yet</p>
+            <p className="mb-4 text-muted-foreground">Aucune annonce pour le moment</p>
             <Button asChild>
-              <Link href="/publish">Create Your First Listing</Link>
+              <Link href="/publish">Créer Votre Première Annonce</Link>
             </Button>
           </div>
         )}
@@ -184,7 +183,7 @@ export function ProfileView({ profile, listings, listingsCount, reviews }: Profi
 
       {/* Reviews */}
       <div className="space-y-4">
-        <h2 className="text-xl font-bold">Reviews</h2>
+        <h2 className="text-xl font-bold">Avis</h2>
         {reviews.length > 0 ? (
           <div className="space-y-3">
             {reviews.map((review) => (
@@ -198,7 +197,7 @@ export function ProfileView({ profile, listings, listingsCount, reviews }: Profi
                       {review.reviewer?.full_name?.charAt(0) || "?"}
                     </div>
                     <span className="font-medium">
-                      {review.reviewer?.full_name || "Anonymous"}
+                      {review.reviewer?.full_name || "Anonyme"}
                     </span>
                   </div>
                   <div className="flex gap-0.5">
@@ -222,7 +221,7 @@ export function ProfileView({ profile, listings, listingsCount, reviews }: Profi
           </div>
         ) : (
           <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-muted/30 py-8">
-            <p className="text-muted-foreground">No reviews yet</p>
+            <p className="text-muted-foreground">Aucun avis pour le moment</p>
           </div>
         )}
       </div>

@@ -8,10 +8,10 @@ import { Button } from "@/components/ui/button"
 import { DyoLogo } from "@/components/dyo-logo"
 
 const navLinks = [
-  { href: "#features", label: "Features" },
-  { href: "#categories", label: "Categories" },
-  { href: "#how-it-works", label: "How it Works" },
-  { href: "#testimonials", label: "Testimonials" },
+  { href: "#features", label: "Fonctionnalités" },
+  { href: "#categories", label: "Catégories" },
+  { href: "#how-it-works", label: "Comment ça marche" },
+  { href: "#testimonials", label: "Témoignages" },
 ]
 
 export function LandingHeader() {
@@ -46,10 +46,10 @@ export function LandingHeader() {
           {/* Desktop Auth Buttons */}
           <div className="hidden items-center gap-3 md:flex">
             <Button variant="ghost" asChild>
-              <Link href="/auth/login">Login</Link>
+              <Link href="/auth/login">Connexion</Link>
             </Button>
             <Button asChild className="btn-glow">
-              <Link href="/auth/sign-up">Get Started</Link>
+              <Link href="/auth/sign-up">Commencer</Link>
             </Button>
           </div>
 
@@ -88,10 +88,10 @@ export function LandingHeader() {
               ))}
               <div className="mt-4 flex flex-col gap-2 border-t border-border pt-4">
                 <Button variant="outline" asChild className="w-full">
-                  <Link href="/auth/login">Login</Link>
+                  <Link href="/auth/login">Connexion</Link>
                 </Button>
                 <Button asChild className="w-full">
-                  <Link href="/auth/sign-up">Get Started</Link>
+                  <Link href="/auth/sign-up">Commencer</Link>
                 </Button>
               </div>
             </div>

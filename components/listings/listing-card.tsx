@@ -52,14 +52,14 @@ export function ListingCard({ listing, className }: ListingCardProps) {
 
   const timeAgo = (date: string) => {
     const seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000)
-    if (seconds < 60) return "Just now"
+    if (seconds < 60) return "À l'instant"
     const minutes = Math.floor(seconds / 60)
-    if (minutes < 60) return `${minutes}m ago`
+    if (minutes < 60) return `Il y a ${minutes}min`
     const hours = Math.floor(minutes / 60)
-    if (hours < 24) return `${hours}h ago`
+    if (hours < 24) return `Il y a ${hours}h`
     const days = Math.floor(hours / 24)
-    if (days < 7) return `${days}d ago`
-    return new Date(date).toLocaleDateString()
+    if (days < 7) return `Il y a ${days}j`
+    return new Date(date).toLocaleDateString("fr-FR")
   }
 
   return (
@@ -91,7 +91,7 @@ export function ListingCard({ listing, className }: ListingCardProps) {
           style={{ backgroundColor: listing.categories?.color || "#6366f1" }}
         >
           <CategoryIcon className="h-3.5 w-3.5" />
-          {listing.categories?.name_fr || "Other"}
+          {listing.categories?.name_fr || "Autre"}
         </div>
 
         {/* Favorite button */}

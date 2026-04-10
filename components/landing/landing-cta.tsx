@@ -22,11 +22,11 @@ export function LandingCTA() {
           
           <div className="relative z-10 mx-auto max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight text-primary-foreground sm:text-4xl lg:text-5xl">
-              Ready to Start Exchanging?
+              Prêt à Commencer les Échanges ?
             </h2>
             <p className="mt-4 text-lg leading-relaxed text-primary-foreground/80">
-              Join thousands of students saving money and building connections. 
-              Create your free account today.
+              Rejoignez des milliers d&apos;étudiants qui économisent de l&apos;argent et créent des connexions. 
+              Créez votre compte gratuit dès aujourd&apos;hui.
             </p>
             <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
               <Button
@@ -36,7 +36,7 @@ export function LandingCTA() {
                 className="group gap-2 px-8"
               >
                 <Link href="/auth/sign-up">
-                  Get Started Free
+                  Commencer Gratuitement
                   <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
@@ -47,7 +47,7 @@ export function LandingCTA() {
                 className="border-primary-foreground/20 bg-transparent text-primary-foreground hover:bg-primary-foreground/10"
               >
                 <Link href="/explore">
-                  Browse Listings
+                  Parcourir les Annonces
                 </Link>
               </Button>
             </div>

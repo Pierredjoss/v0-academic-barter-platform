@@ -38,7 +38,7 @@ export function LandingHero() {
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-medium text-primary">
               <Sparkles className="h-4 w-4" />
-              <span>Intelligent Academic Exchange</span>
+              <span>Plateforme de Troc Académique Intelligente</span>
             </div>
           </motion.div>
 
@@ -49,8 +49,8 @@ export function LandingHero() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="mt-8 max-w-4xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
           >
-            Exchange Knowledge,{" "}
-            <span className="gradient-text">Empower Learning</span>
+            Échangez le Savoir,{" "}
+            <span className="gradient-text">Renforcez l&apos;Apprentissage</span>
           </motion.h1>
 
           {/* Subtitle */}
@@ -60,8 +60,8 @@ export function LandingHero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl"
           >
-            Connect with students near you to barter academic resources. 
-            Books, notes, materials - all without spending a dime.
+            Connectez-vous avec des étudiants près de chez vous pour troquer des ressources académiques. 
+            Livres, notes, matériels - tout cela sans dépenser un centime.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -73,13 +73,13 @@ export function LandingHero() {
           >
             <Button size="lg" asChild className="btn-glow group gap-2 px-8">
               <Link href="/auth/sign-up">
-                Start Exchanging
+                Commencer à Échanger
                 <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
             <Button size="lg" variant="outline" asChild className="gap-2 px-8">
               <Link href="#how-it-works">
-                Learn More
+                En Savoir Plus
               </Link>
             </Button>
           </motion.div>
@@ -92,9 +92,9 @@ export function LandingHero() {
             className="mt-16 grid grid-cols-3 gap-8 sm:gap-12"
           >
             {[
-              { icon: BookOpen, value: "10K+", label: "Resources Shared" },
-              { icon: Users, value: "5K+", label: "Active Students" },
-              { icon: MapPin, value: "50+", label: "Universities" },
+              { icon: BookOpen, value: "10K+", label: "Ressources Partagées" },
+              { icon: Users, value: "5K+", label: "Étudiants Actifs" },
+              { icon: MapPin, value: "50+", label: "Universités" },
             ].map((stat, index) => (
               <div key={index} className="flex flex-col items-center gap-2">
                 <stat.icon className="h-6 w-6 text-primary" />

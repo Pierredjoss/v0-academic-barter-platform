@@ -42,13 +42,13 @@ export function MessagesLayout({ conversations, currentUserId }: MessagesLayoutP
 
   const timeAgo = (date: string) => {
     const seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000)
-    if (seconds < 60) return "now"
+    if (seconds < 60) return "maintenant"
     const minutes = Math.floor(seconds / 60)
-    if (minutes < 60) return `${minutes}m`
+    if (minutes < 60) return `${minutes}min`
     const hours = Math.floor(minutes / 60)
     if (hours < 24) return `${hours}h`
     const days = Math.floor(hours / 24)
-    return `${days}d`
+    return `${days}j`
   }
 
   return (
@@ -63,7 +63,7 @@ export function MessagesLayout({ conversations, currentUserId }: MessagesLayoutP
           <span className="gradient-text">Messages</span>
         </h1>
         <p className="text-muted-foreground">
-          Chat with other students about exchanges
+          Discutez avec d&apos;autres étudiants au sujet des échanges
         </p>
       </motion.div>
 
@@ -72,7 +72,7 @@ export function MessagesLayout({ conversations, currentUserId }: MessagesLayoutP
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           type="search"
-          placeholder="Search conversations..."
+          placeholder="Rechercher des conversations..."
           className="h-11 pl-10"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -102,7 +102,7 @@ export function MessagesLayout({ conversations, currentUserId }: MessagesLayoutP
               <div className="flex-1 overflow-hidden">
                 <div className="flex items-center justify-between">
                   <p className="truncate font-semibold">
-                    {conversation.otherUser?.full_name || "Unknown User"}
+                    {conversation.otherUser?.full_name || "Utilisateur Inconnu"}
                   </p>
                   {conversation.lastMessage && (
                     <span className="text-xs text-muted-foreground">
@@ -117,7 +117,7 @@ export function MessagesLayout({ conversations, currentUserId }: MessagesLayoutP
                 )}
                 {conversation.lastMessage && (
                   <p className="truncate text-sm text-muted-foreground">
-                    {conversation.lastMessage.sender_id === currentUserId ? "You: " : ""}
+                    {conversation.lastMessage.sender_id === currentUserId ? "Vous: " : ""}
                     {conversation.lastMessage.content}
                   </p>
                 )}
@@ -130,9 +130,9 @@ export function MessagesLayout({ conversations, currentUserId }: MessagesLayoutP
           <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
             <MessageSquare className="h-6 w-6 text-muted-foreground" />
           </div>
-          <h3 className="mb-1 font-medium">No Conversations</h3>
+          <h3 className="mb-1 font-medium">Aucune Conversation</h3>
           <p className="text-center text-sm text-muted-foreground">
-            Start a conversation by contacting a listing owner
+            Commencez une conversation en contactant un propriétaire d&apos;annonce
           </p>
         </div>
       )}

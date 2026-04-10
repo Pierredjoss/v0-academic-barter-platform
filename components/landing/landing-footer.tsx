@@ -6,21 +6,21 @@ import { Github, Twitter, Linkedin, Mail } from "lucide-react"
 
 const footerLinks = {
   product: [
-    { label: "Features", href: "#features" },
-    { label: "Categories", href: "#categories" },
-    { label: "How it Works", href: "#how-it-works" },
-    { label: "Pricing", href: "/pricing" },
+    { label: "Fonctionnalités", href: "#features" },
+    { label: "Catégories", href: "#categories" },
+    { label: "Comment ça marche", href: "#how-it-works" },
+    { label: "Tarifs", href: "/pricing" },
   ],
   company: [
-    { label: "About", href: "/about" },
+    { label: "À propos", href: "/about" },
     { label: "Blog", href: "/blog" },
-    { label: "Careers", href: "/careers" },
+    { label: "Carrières", href: "/careers" },
     { label: "Contact", href: "/contact" },
   ],
   legal: [
-    { label: "Privacy Policy", href: "/privacy" },
-    { label: "Terms of Service", href: "/terms" },
-    { label: "Cookie Policy", href: "/cookies" },
+    { label: "Politique de confidentialité", href: "/privacy" },
+    { label: "Conditions d&apos;utilisation", href: "/terms" },
+    { label: "Politique de cookies", href: "/cookies" },
   ],
   social: [
     { icon: Twitter, href: "https://twitter.com", label: "Twitter" },
@@ -39,8 +39,8 @@ export function LandingFooter() {
           <div className="lg:col-span-2">
             <DyoLogo size="md" />
             <p className="mt-4 max-w-xs text-sm text-muted-foreground leading-relaxed">
-              The intelligent academic barter platform connecting students 
-              across Africa to exchange resources and knowledge.
+              La plateforme de troc académique intelligente connectant les étudiants 
+              à travers l&apos;Afrique pour échanger des ressources et des connaissances.
             </p>
             {/* Social links */}
             <div className="mt-6 flex gap-4">
@@ -61,7 +61,7 @@ export function LandingFooter() {
 
           {/* Product links */}
           <div>
-            <h3 className="mb-4 font-semibold">Product</h3>
+            <h3 className="mb-4 font-semibold">Produit</h3>
             <ul className="space-y-3">
               {footerLinks.product.map((link) => (
                 <li key={link.href}>
@@ -78,7 +78,7 @@ export function LandingFooter() {
 
           {/* Company links */}
           <div>
-            <h3 className="mb-4 font-semibold">Company</h3>
+            <h3 className="mb-4 font-semibold">Entreprise</h3>
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.href}>
@@ -95,7 +95,7 @@ export function LandingFooter() {
 
           {/* Legal links */}
           <div>
-            <h3 className="mb-4 font-semibold">Legal</h3>
+            <h3 className="mb-4 font-semibold">Légal</h3>
             <ul className="space-y-3">
               {footerLinks.legal.map((link) => (
                 <li key={link.href}>
@@ -114,10 +114,10 @@ export function LandingFooter() {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} ɖyɔ̌. All rights reserved.
+            &copy; {new Date().getFullYear()} ɖyɔ̌. Tous droits réservés.
           </p>
           <p className="text-sm text-muted-foreground">
-            Made with care for African students
+            Fait avec soin pour les étudiants africains
           </p>
         </div>
       </div>

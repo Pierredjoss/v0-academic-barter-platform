@@ -63,7 +63,7 @@ export function SettingsForm({ profile, userEmail }: SettingsFormProps) {
       setSuccess(true)
       router.refresh()
     } catch {
-      setError("An unexpected error occurred")
+      setError("Une erreur inattendue s'est produite")
     } finally {
       setLoading(false)
     }
@@ -85,7 +85,7 @@ export function SettingsForm({ profile, userEmail }: SettingsFormProps) {
 
       {success && (
         <div className="rounded-lg bg-emerald-500/10 p-3 text-sm text-emerald-600">
-          Profile updated successfully!
+          Profil mis à jour avec succès !
         </div>
       )}
 
@@ -105,20 +105,20 @@ export function SettingsForm({ profile, userEmail }: SettingsFormProps) {
           />
         </div>
         <p className="text-xs text-muted-foreground">
-          Email cannot be changed
+          L&apos;email ne peut pas être modifié
         </p>
       </div>
 
       {/* Full Name */}
       <div className="space-y-2">
         <label htmlFor="fullName" className="text-sm font-medium">
-          Full Name
+          Nom Complet
         </label>
         <div className="relative">
           <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             id="fullName"
-            placeholder="Your full name"
+            placeholder="Votre nom complet"
             value={formData.fullName}
             onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
             className="h-12 pl-10"
@@ -129,13 +129,13 @@ export function SettingsForm({ profile, userEmail }: SettingsFormProps) {
       {/* University */}
       <div className="space-y-2">
         <label htmlFor="university" className="text-sm font-medium">
-          University
+          Université
         </label>
         <div className="relative">
           <GraduationCap className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             id="university"
-            placeholder="Your university"
+            placeholder="Votre université"
             value={formData.university}
             onChange={(e) => setFormData({ ...formData, university: e.target.value })}
             className="h-12 pl-10"
@@ -146,13 +146,13 @@ export function SettingsForm({ profile, userEmail }: SettingsFormProps) {
       {/* City */}
       <div className="space-y-2">
         <label htmlFor="city" className="text-sm font-medium">
-          City
+          Ville
         </label>
         <div className="relative">
           <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             id="city"
-            placeholder="Your city"
+            placeholder="Votre ville"
             value={formData.city}
             onChange={(e) => setFormData({ ...formData, city: e.target.value })}
             className="h-12 pl-10"
@@ -167,7 +167,7 @@ export function SettingsForm({ profile, userEmail }: SettingsFormProps) {
         </label>
         <Textarea
           id="bio"
-          placeholder="Tell other students about yourself..."
+          placeholder="Parlez de vous aux autres étudiants..."
           value={formData.bio}
           onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
           rows={4}
@@ -185,7 +185,7 @@ export function SettingsForm({ profile, userEmail }: SettingsFormProps) {
         ) : (
           <>
             <Save className="h-4 w-4" />
-            Save Changes
+            Enregistrer les Modifications
           </>
         )}
       </Button>

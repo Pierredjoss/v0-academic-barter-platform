@@ -5,7 +5,6 @@ import { motion } from "framer-motion"
 import { MapPin, List, Map, Search, Navigation } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { cn } from "@/lib/utils"
 import Link from "next/link"
 import {
   BookOpen,
@@ -50,7 +49,7 @@ export function MapView({ listings }: MapViewProps) {
 
   // Group listings by city
   const citiesMap = listings.reduce((acc, listing) => {
-    const city = listing.city || "Unknown"
+    const city = listing.city || "Inconnu"
     if (!acc[city]) {
       acc[city] = []
     }
@@ -76,10 +75,10 @@ export function MapView({ listings }: MapViewProps) {
       >
         <div className="space-y-1">
           <h1 className="text-2xl font-bold sm:text-3xl">
-            <span className="gradient-text">Nearby</span> Listings
+            Annonces <span className="gradient-text">à Proximité</span>
           </h1>
           <p className="text-muted-foreground">
-            Find resources in your area
+            Trouvez des ressources dans votre région
           </p>
         </div>
         <div className="flex gap-1 rounded-lg border border-border bg-muted/50 p-1">
@@ -105,7 +104,7 @@ export function MapView({ listings }: MapViewProps) {
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           type="search"
-          placeholder="Search cities..."
+          placeholder="Rechercher des villes..."
           className="h-11 pl-10"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -130,13 +129,13 @@ export function MapView({ listings }: MapViewProps) {
                     <div>
                       <h3 className="font-semibold">{city.name}</h3>
                       <p className="text-xs text-muted-foreground">
-                        {city.count} listing{city.count > 1 ? "s" : ""}
+                        {city.count} annonce{city.count > 1 ? "s" : ""}
                       </p>
                     </div>
                   </div>
                   <Button variant="ghost" size="sm" className="gap-1">
                     <Navigation className="h-4 w-4" />
-                    View All
+                    Voir Tout
                   </Button>
                 </div>
                 
@@ -173,9 +172,9 @@ export function MapView({ listings }: MapViewProps) {
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
                 <MapPin className="h-6 w-6 text-muted-foreground" />
               </div>
-              <h3 className="mb-1 font-medium">No Listings Found</h3>
+              <h3 className="mb-1 font-medium">Aucune Annonce Trouvée</h3>
               <p className="text-center text-sm text-muted-foreground">
-                No listings available in nearby cities
+                Aucune annonce disponible dans les villes à proximité
               </p>
             </div>
           )}
@@ -185,9 +184,9 @@ export function MapView({ listings }: MapViewProps) {
           <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
             <Map className="h-6 w-6 text-muted-foreground" />
           </div>
-          <h3 className="mb-1 font-medium">Map View Coming Soon</h3>
+          <h3 className="mb-1 font-medium">Vue Carte Bientôt Disponible</h3>
           <p className="text-center text-sm text-muted-foreground">
-            Interactive map with listing pins is under development
+            La carte interactive avec les marqueurs d&apos;annonces est en cours de développement
           </p>
         </div>
       )}

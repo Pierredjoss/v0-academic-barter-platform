@@ -13,10 +13,10 @@ export default async function PublishPage() {
     <div className="mx-auto max-w-2xl space-y-6">
       <div className="space-y-1">
         <h1 className="text-2xl font-bold sm:text-3xl">
-          <span className="gradient-text">Publish</span> a Listing
+          <span className="gradient-text">Publier</span> une Annonce
         </h1>
         <p className="text-muted-foreground">
-          Share your academic resources with other students
+          Partagez vos ressources académiques avec d&apos;autres étudiants
         </p>
       </div>
 

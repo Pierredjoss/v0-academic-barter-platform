@@ -14,12 +14,12 @@ interface DashboardWelcomeProps {
 export function DashboardWelcome({ profile }: DashboardWelcomeProps) {
   const getGreeting = () => {
     const hour = new Date().getHours()
-    if (hour < 12) return "Good morning"
-    if (hour < 18) return "Good afternoon"
-    return "Good evening"
+    if (hour < 12) return "Bonjour"
+    if (hour < 18) return "Bon après-midi"
+    return "Bonsoir"
   }
 
-  const firstName = profile?.full_name?.split(" ")[0] || "Student"
+  const firstName = profile?.full_name?.split(" ")[0] || "Étudiant"
 
   return (
     <motion.div
@@ -33,8 +33,8 @@ export function DashboardWelcome({ profile }: DashboardWelcomeProps) {
       </h1>
       <p className="text-muted-foreground">
         {profile?.university 
-          ? `Welcome back! Ready to exchange at ${profile.university}?`
-          : "Ready to discover academic resources?"
+          ? `Bienvenue ! Prêt à échanger à ${profile.university} ?`
+          : "Prêt à découvrir des ressources académiques ?"
         }
       </p>
     </motion.div>

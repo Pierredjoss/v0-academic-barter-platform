@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { Upload, X, Loader2, MapPin, Check } from "lucide-react"
+import { Upload, Loader2, MapPin, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -28,16 +28,16 @@ const categoryIcons: Record<string, React.ElementType> = {
 }
 
 const conditions = [
-  { value: "new", label: "New", description: "Never used" },
-  { value: "like_new", label: "Like New", description: "Barely used" },
-  { value: "good", label: "Good", description: "Some wear" },
-  { value: "fair", label: "Fair", description: "Visible wear" },
+  { value: "new", label: "Neuf", description: "Jamais utilisé" },
+  { value: "like_new", label: "Comme Neuf", description: "Très peu utilisé" },
+  { value: "good", label: "Bon", description: "Quelques marques" },
+  { value: "fair", label: "Correct", description: "Usure visible" },
 ]
 
 const exchangeTypes = [
-  { value: "in_person", label: "In Person" },
-  { value: "delivery", label: "Delivery" },
-  { value: "both", label: "Both" },
+  { value: "in_person", label: "En Personne" },
+  { value: "delivery", label: "Livraison" },
+  { value: "both", label: "Les Deux" },
 ]
 
 interface Category {
@@ -77,7 +77,7 @@ export function PublishForm({ categories }: PublishFormProps) {
       const { data: { user } } = await supabase.auth.getUser()
 
       if (!user) {
-        setError("You must be logged in to publish")
+        setError("Vous devez être connecté pour publier")
         return
       }
 
@@ -103,7 +103,7 @@ export function PublishForm({ categories }: PublishFormProps) {
         router.refresh()
       }, 1500)
     } catch {
-      setError("An unexpected error occurred")
+      setError("Une erreur inattendue s'est produite")
     } finally {
       setLoading(false)
     }
@@ -119,9 +119,9 @@ export function PublishForm({ categories }: PublishFormProps) {
         <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/10">
           <Check className="h-8 w-8 text-emerald-500" />
         </div>
-        <h2 className="mb-2 text-xl font-bold">Listing Published!</h2>
+        <h2 className="mb-2 text-xl font-bold">Annonce Publiée !</h2>
         <p className="text-muted-foreground">
-          Your listing is now live. Redirecting...
+          Votre annonce est maintenant en ligne. Redirection...
         </p>
       </motion.div>
     )
@@ -144,11 +144,11 @@ export function PublishForm({ categories }: PublishFormProps) {
       {/* Title */}
       <div className="space-y-2">
         <label htmlFor="title" className="text-sm font-medium">
-          Title <span className="text-destructive">*</span>
+          Titre <span className="text-destructive">*</span>
         </label>
         <Input
           id="title"
-          placeholder="e.g., Calculus Textbook 10th Edition"
+          placeholder="ex: Manuel de Calcul 10ème Édition"
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           required
@@ -163,7 +163,7 @@ export function PublishForm({ categories }: PublishFormProps) {
         </label>
         <Textarea
           id="description"
-          placeholder="Describe your item, its condition, what you're looking for in exchange..."
+          placeholder="Décrivez votre article, son état, ce que vous recherchez en échange..."
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
           rows={4}
@@ -173,7 +173,7 @@ export function PublishForm({ categories }: PublishFormProps) {
       {/* Category */}
       <div className="space-y-2">
         <label className="text-sm font-medium">
-          Category <span className="text-destructive">*</span>
+          Catégorie <span className="text-destructive">*</span>
         </label>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
           {categories.map((category) => {
@@ -207,7 +207,7 @@ export function PublishForm({ categories }: PublishFormProps) {
       {/* Condition */}
       <div className="space-y-2">
         <label className="text-sm font-medium">
-          Condition <span className="text-destructive">*</span>
+          État <span className="text-destructive">*</span>
         </label>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {conditions.map((condition) => {
@@ -234,7 +234,7 @@ export function PublishForm({ categories }: PublishFormProps) {
 
       {/* Exchange Type */}
       <div className="space-y-2">
-        <label className="text-sm font-medium">Exchange Method</label>
+        <label className="text-sm font-medium">Mode d&apos;échange</label>
         <div className="flex gap-2">
           {exchangeTypes.map((type) => {
             const isSelected = formData.exchangeType === type.value
@@ -260,13 +260,13 @@ export function PublishForm({ categories }: PublishFormProps) {
       {/* City */}
       <div className="space-y-2">
         <label htmlFor="city" className="text-sm font-medium">
-          City
+          Ville
         </label>
         <div className="relative">
           <MapPin className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             id="city"
-            placeholder="Your city"
+            placeholder="Votre ville"
             value={formData.city}
             onChange={(e) => setFormData({ ...formData, city: e.target.value })}
             className="h-12 pl-10"
@@ -282,7 +282,7 @@ export function PublishForm({ categories }: PublishFormProps) {
           className="flex-1"
           onClick={() => router.back()}
         >
-          Cancel
+          Annuler
         </Button>
         <Button
           type="submit"
@@ -294,7 +294,7 @@ export function PublishForm({ categories }: PublishFormProps) {
           ) : (
             <>
               <Upload className="h-4 w-4" />
-              Publish
+              Publier
             </>
           )}
         </Button>

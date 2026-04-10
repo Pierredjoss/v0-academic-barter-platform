@@ -31,14 +31,14 @@ export default function LoginPage() {
       })
 
       if (error) {
-        setError(error.message)
+        setError("Email ou mot de passe incorrect")
         return
       }
 
       router.push("/dashboard")
       router.refresh()
     } catch {
-      setError("An unexpected error occurred")
+      setError("Une erreur inattendue s'est produite")
     } finally {
       setLoading(false)
     }
@@ -66,9 +66,9 @@ export default function LoginPage() {
           {/* Card */}
           <div className="rounded-2xl border border-border bg-card p-8 shadow-xl">
             <div className="mb-6 text-center">
-              <h1 className="text-2xl font-bold">Welcome Back</h1>
+              <h1 className="text-2xl font-bold">Bon Retour</h1>
               <p className="mt-2 text-sm text-muted-foreground">
-                Sign in to continue to your account
+                Connectez-vous pour accéder à votre compte
               </p>
             </div>
 
@@ -90,7 +90,7 @@ export default function LoginPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="you@university.edu"
+                  placeholder="vous@universite.edu"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -101,20 +101,20 @@ export default function LoginPage() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <label htmlFor="password" className="text-sm font-medium">
-                    Password
+                    Mot de passe
                   </label>
                   <Link
                     href="/auth/forgot-password"
                     className="text-sm text-primary hover:underline"
                   >
-                    Forgot password?
+                    Mot de passe oublié ?
                   </Link>
                 </div>
                 <div className="relative">
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
+                    placeholder="Entrez votre mot de passe"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -143,7 +143,7 @@ export default function LoginPage() {
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   <>
-                    Sign In
+                    Se Connecter
                     <ArrowRight className="h-4 w-4" />
                   </>
                 )}
@@ -151,9 +151,9 @@ export default function LoginPage() {
             </form>
 
             <div className="mt-6 text-center text-sm text-muted-foreground">
-              Don&apos;t have an account?{" "}
+              Vous n&apos;avez pas de compte ?{" "}
               <Link href="/auth/sign-up" className="font-medium text-primary hover:underline">
-                Sign up
+                S&apos;inscrire
               </Link>
             </div>
           </div>
@@ -164,7 +164,7 @@ export default function LoginPage() {
               href="/"
               className="text-sm text-muted-foreground hover:text-foreground"
             >
-              &larr; Back to home
+              &larr; Retour à l&apos;accueil
             </Link>
           </div>
         </motion.div>

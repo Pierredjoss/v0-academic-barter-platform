@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
-import { ArrowRight, Eye, MapPin } from "lucide-react"
+import { ArrowRight, Eye } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ListingCard } from "@/components/listings/listing-card"
 
@@ -21,10 +21,10 @@ export async function DashboardRecentListings() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold">Recent Listings</h2>
+        <h2 className="text-xl font-bold">Annonces Récentes</h2>
         <Button variant="ghost" asChild className="gap-1">
           <Link href="/explore">
-            View All
+            Voir Tout
             <ArrowRight className="h-4 w-4" />
           </Link>
         </Button>
@@ -41,12 +41,12 @@ export async function DashboardRecentListings() {
           <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
             <Eye className="h-6 w-6 text-muted-foreground" />
           </div>
-          <h3 className="mb-1 font-medium">No Listings Yet</h3>
+          <h3 className="mb-1 font-medium">Aucune Annonce</h3>
           <p className="mb-4 text-sm text-muted-foreground">
-            Be the first to publish a listing!
+            Soyez le premier à publier une annonce !
           </p>
           <Button asChild>
-            <Link href="/publish">Publish Now</Link>
+            <Link href="/publish">Publier Maintenant</Link>
           </Button>
         </div>
       )}

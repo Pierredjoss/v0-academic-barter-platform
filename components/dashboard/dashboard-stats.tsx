@@ -37,14 +37,14 @@ export async function DashboardStats({ userId }: DashboardStatsProps) {
   const stats = [
     {
       icon: BookOpen,
-      label: "My Listings",
+      label: "Mes Annonces",
       value: listingsCount || 0,
       color: "text-violet-500",
       bgColor: "bg-violet-500/10",
     },
     {
       icon: Repeat,
-      label: "Exchanges",
+      label: "Échanges",
       value: exchangesCount || 0,
       color: "text-emerald-500",
       bgColor: "bg-emerald-500/10",
@@ -58,7 +58,7 @@ export async function DashboardStats({ userId }: DashboardStatsProps) {
     },
     {
       icon: Star,
-      label: "Rating",
+      label: "Note",
       value: profile?.average_rating?.toFixed(1) || "0.0",
       color: "text-amber-500",
       bgColor: "bg-amber-500/10",

@@ -39,16 +39,16 @@ interface DashboardSidebarProps {
 }
 
 const navItems = [
-  { href: "/dashboard", icon: Home, label: "Home" },
-  { href: "/explore", icon: Compass, label: "Explore" },
-  { href: "/publish", icon: Plus, label: "Publish" },
+  { href: "/dashboard", icon: Home, label: "Accueil" },
+  { href: "/explore", icon: Compass, label: "Explorer" },
+  { href: "/publish", icon: Plus, label: "Publier" },
   { href: "/messages", icon: MessageSquare, label: "Messages" },
-  { href: "/map", icon: MapPin, label: "Map" },
+  { href: "/map", icon: MapPin, label: "Carte" },
 ]
 
 const bottomNavItems = [
-  { href: "/profile", icon: User, label: "Profile" },
-  { href: "/settings", icon: Settings, label: "Settings" },
+  { href: "/profile", icon: User, label: "Profil" },
+  { href: "/settings", icon: Settings, label: "Paramètres" },
 ]
 
 export function DashboardSidebar({ user, profile, className, onClose }: DashboardSidebarProps) {
@@ -87,13 +87,13 @@ export function DashboardSidebar({ user, profile, className, onClose }: Dashboar
           </div>
           <div className="flex-1 overflow-hidden">
             <p className="truncate font-medium text-sidebar-foreground">
-              {profile?.full_name || "Student"}
+              {profile?.full_name || "Étudiant"}
             </p>
             <div className="flex items-center gap-1 text-xs text-sidebar-foreground/60">
               <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
               <span>{profile?.average_rating?.toFixed(1) || "0.0"}</span>
               <span className="mx-1">&bull;</span>
-              <span>{profile?.total_exchanges || 0} exchanges</span>
+              <span>{profile?.total_exchanges || 0} échanges</span>
             </div>
           </div>
         </div>
@@ -154,7 +154,7 @@ export function DashboardSidebar({ user, profile, className, onClose }: Dashboar
               className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-sidebar-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
             >
               <LogOut className="h-5 w-5" />
-              Sign Out
+              Déconnexion
             </button>
           </li>
         </ul>

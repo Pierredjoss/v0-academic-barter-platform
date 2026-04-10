@@ -25,9 +25,9 @@ export default function SignUpPage() {
   const [error, setError] = useState<string | null>(null)
 
   const passwordRequirements = [
-    { label: "At least 8 characters", met: formData.password.length >= 8 },
-    { label: "Contains a number", met: /\d/.test(formData.password) },
-    { label: "Contains uppercase", met: /[A-Z]/.test(formData.password) },
+    { label: "Au moins 8 caractères", met: formData.password.length >= 8 },
+    { label: "Contient un chiffre", met: /\d/.test(formData.password) },
+    { label: "Contient une majuscule", met: /[A-Z]/.test(formData.password) },
   ]
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,13 +40,13 @@ export default function SignUpPage() {
     setError(null)
 
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match")
+      setError("Les mots de passe ne correspondent pas")
       setLoading(false)
       return
     }
 
     if (!passwordRequirements.every((req) => req.met)) {
-      setError("Please meet all password requirements")
+      setError("Veuillez respecter toutes les exigences du mot de passe")
       setLoading(false)
       return
     }
@@ -75,7 +75,7 @@ export default function SignUpPage() {
 
       router.push("/auth/sign-up-success")
     } catch {
-      setError("An unexpected error occurred")
+      setError("Une erreur inattendue s'est produite")
     } finally {
       setLoading(false)
     }
@@ -103,9 +103,9 @@ export default function SignUpPage() {
           {/* Card */}
           <div className="rounded-2xl border border-border bg-card p-8 shadow-xl">
             <div className="mb-6 text-center">
-              <h1 className="text-2xl font-bold">Create Account</h1>
+              <h1 className="text-2xl font-bold">Créer un Compte</h1>
               <p className="mt-2 text-sm text-muted-foreground">
-                Join the academic barter community
+                Rejoignez la communauté de troc académique
               </p>
             </div>
 
@@ -122,13 +122,13 @@ export default function SignUpPage() {
 
               <div className="space-y-2">
                 <label htmlFor="fullName" className="text-sm font-medium">
-                  Full Name
+                  Nom Complet
                 </label>
                 <Input
                   id="fullName"
                   name="fullName"
                   type="text"
-                  placeholder="Your full name"
+                  placeholder="Votre nom complet"
                   value={formData.fullName}
                   onChange={handleChange}
                   required
@@ -138,13 +138,13 @@ export default function SignUpPage() {
 
               <div className="space-y-2">
                 <label htmlFor="email" className="text-sm font-medium">
-                  University Email
+                  Email Universitaire
                 </label>
                 <Input
                   id="email"
                   name="email"
                   type="email"
-                  placeholder="you@university.edu"
+                  placeholder="vous@universite.edu"
                   value={formData.email}
                   onChange={handleChange}
                   required
@@ -155,13 +155,13 @@ export default function SignUpPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label htmlFor="university" className="text-sm font-medium">
-                    University
+                    Université
                   </label>
                   <Input
                     id="university"
                     name="university"
                     type="text"
-                    placeholder="Your university"
+                    placeholder="Votre université"
                     value={formData.university}
                     onChange={handleChange}
                     required
@@ -170,13 +170,13 @@ export default function SignUpPage() {
                 </div>
                 <div className="space-y-2">
                   <label htmlFor="city" className="text-sm font-medium">
-                    City
+                    Ville
                   </label>
                   <Input
                     id="city"
                     name="city"
                     type="text"
-                    placeholder="Your city"
+                    placeholder="Votre ville"
                     value={formData.city}
                     onChange={handleChange}
                     required
@@ -187,14 +187,14 @@ export default function SignUpPage() {
 
               <div className="space-y-2">
                 <label htmlFor="password" className="text-sm font-medium">
-                  Password
+                  Mot de passe
                 </label>
                 <div className="relative">
                   <Input
                     id="password"
                     name="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="Create a strong password"
+                    placeholder="Créez un mot de passe fort"
                     value={formData.password}
                     onChange={handleChange}
                     required
@@ -230,13 +230,13 @@ export default function SignUpPage() {
 
               <div className="space-y-2">
                 <label htmlFor="confirmPassword" className="text-sm font-medium">
-                  Confirm Password
+                  Confirmer le Mot de passe
                 </label>
                 <Input
                   id="confirmPassword"
                   name="confirmPassword"
                   type="password"
-                  placeholder="Confirm your password"
+                  placeholder="Confirmez votre mot de passe"
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   required
@@ -253,28 +253,28 @@ export default function SignUpPage() {
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   <>
-                    Create Account
+                    Créer un Compte
                     <ArrowRight className="h-4 w-4" />
                   </>
                 )}
               </Button>
 
               <p className="text-center text-xs text-muted-foreground">
-                By signing up, you agree to our{" "}
+                En vous inscrivant, vous acceptez nos{" "}
                 <Link href="/terms" className="text-primary hover:underline">
-                  Terms of Service
+                  Conditions d&apos;utilisation
                 </Link>{" "}
-                and{" "}
+                et notre{" "}
                 <Link href="/privacy" className="text-primary hover:underline">
-                  Privacy Policy
+                  Politique de confidentialité
                 </Link>
               </p>
             </form>
 
             <div className="mt-6 text-center text-sm text-muted-foreground">
-              Already have an account?{" "}
+              Vous avez déjà un compte ?{" "}
               <Link href="/auth/login" className="font-medium text-primary hover:underline">
-                Sign in
+                Se connecter
               </Link>
             </div>
           </div>
@@ -285,7 +285,7 @@ export default function SignUpPage() {
               href="/"
               className="text-sm text-muted-foreground hover:text-foreground"
             >
-              &larr; Back to home
+              &larr; Retour à l&apos;accueil
             </Link>
           </div>
         </motion.div>

@@ -11,10 +11,10 @@ export function ExploreHeader() {
       className="space-y-1"
     >
       <h1 className="text-2xl font-bold sm:text-3xl">
-        <span className="gradient-text">Explore</span> Listings
+        <span className="gradient-text">Explorer</span> les Annonces
       </h1>
       <p className="text-muted-foreground">
-        Discover academic resources from students near you
+        Découvrez des ressources académiques d&apos;étudiants près de chez vous
       </p>
     </motion.div>
   )

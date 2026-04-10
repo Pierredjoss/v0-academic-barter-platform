@@ -13,33 +13,33 @@ import {
 const features = [
   {
     icon: MapPin,
-    title: "Location-Based Discovery",
-    description: "Find students and resources near your campus. Exchange in person or arrange delivery.",
+    title: "Découverte Géolocalisée",
+    description: "Trouvez des étudiants et des ressources près de votre campus. Échangez en personne ou organisez une livraison.",
   },
   {
     icon: MessageSquare,
-    title: "Real-Time Messaging",
-    description: "Chat directly with other students. Negotiate exchanges and coordinate meetups.",
+    title: "Messagerie en Temps Réel",
+    description: "Discutez directement avec d&apos;autres étudiants. Négociez les échanges et coordonnez les rencontres.",
   },
   {
     icon: Shield,
-    title: "Verified Students",
-    description: "University email verification ensures you are trading with real students.",
+    title: "Étudiants Vérifiés",
+    description: "La vérification par email universitaire garantit que vous échangez avec de vrais étudiants.",
   },
   {
     icon: Star,
-    title: "Trust & Reviews",
-    description: "Build your reputation through reviews. See ratings before you exchange.",
+    title: "Confiance & Avis",
+    description: "Construisez votre réputation grâce aux avis. Consultez les notes avant d&apos;échanger.",
   },
   {
     icon: Zap,
-    title: "Smart Matching",
-    description: "AI-powered suggestions help you find exactly what you need quickly.",
+    title: "Matching Intelligent",
+    description: "Les suggestions basées sur l&apos;IA vous aident à trouver rapidement exactement ce dont vous avez besoin.",
   },
   {
     icon: Smartphone,
-    title: "Mobile Optimized",
-    description: "Beautiful experience on any device. Exchange on the go, anytime.",
+    title: "Optimisé Mobile",
+    description: "Une expérience fluide sur tous les appareils. Échangez en déplacement, à tout moment.",
   },
 ]
 
@@ -75,12 +75,12 @@ export function LandingFeatures() {
           className="mx-auto max-w-2xl text-center"
         >
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Everything You Need to{" "}
-            <span className="gradient-text">Exchange Smarter</span>
+            Tout ce dont vous avez besoin pour{" "}
+            <span className="gradient-text">Échanger Intelligemment</span>
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            Built for students, by students. Every feature designed to make 
-            academic resource sharing simple and secure.
+            Conçu par des étudiants, pour des étudiants. Chaque fonctionnalité est pensée 
+            pour rendre le partage de ressources académiques simple et sécurisé.
           </p>
         </motion.div>
 

@@ -69,7 +69,7 @@ export function ExploreFilters({ categories, currentParams }: ExploreFiltersProp
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Search listings..."
+            placeholder="Rechercher des annonces..."
             className="h-11 pl-10"
             defaultValue={currentParams.search}
             onChange={(e) => {
@@ -95,7 +95,7 @@ export function ExploreFilters({ categories, currentParams }: ExploreFiltersProp
           className="shrink-0"
           onClick={() => updateParams("category", null)}
         >
-          All
+          Tout
         </Button>
         {categories.map((category) => {
           const Icon = categoryIcons[category.icon] || Package
@@ -118,14 +118,14 @@ export function ExploreFilters({ categories, currentParams }: ExploreFiltersProp
       {/* Active filters */}
       {hasActiveFilters && (
         <div className="flex items-center gap-2">
-          <span className="text-sm text-muted-foreground">Active filters:</span>
+          <span className="text-sm text-muted-foreground">Filtres actifs :</span>
           <Button
             variant="ghost"
             size="sm"
             className="h-7 gap-1 text-xs"
             onClick={clearFilters}
           >
-            Clear all
+            Tout effacer
             <X className="h-3 w-3" />
           </Button>
         </div>
