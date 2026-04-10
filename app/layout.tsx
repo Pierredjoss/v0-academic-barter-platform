@@ -16,7 +16,6 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: 'ɖyɔ̌ - Academic Barter Platform',
   description: 'Exchange academic resources intelligently. Books, notes, materials - connect with students near you.',
-  generator: 'v0.app',
   keywords: ['academic', 'exchange', 'barter', 'students', 'books', 'notes', 'university'],
   authors: [{ name: 'ɖyɔ̌ Team' }],
   icons: {
