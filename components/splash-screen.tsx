@@ -9,7 +9,7 @@ interface SplashScreenProps {
   minimumDuration?: number
 }
 
-export function SplashScreen({ onComplete, minimumDuration = 3000 }: SplashScreenProps) {
+export function SplashScreen({ onComplete, minimumDuration = 3500 }: SplashScreenProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isExiting, setIsExiting] = useState(false)
 
@@ -18,66 +18,120 @@ export function SplashScreen({ onComplete, minimumDuration = 3000 }: SplashScree
 
     // Three.js setup
     const scene = new THREE.Scene()
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    scene.background = new THREE.Color('#030712')
+    
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000)
+    const renderer = new THREE.WebGLRenderer({ antialias: true })
     
     renderer.setSize(window.innerWidth, window.innerHeight)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     containerRef.current.appendChild(renderer.domElement)
 
     // Create stars
-    const starCount = 200
-    const starGeometry = new THREE.BufferGeometry()
-    const starPositions = new Float32Array(starCount * 3)
-    const starSizes = new Float32Array(starCount)
+    const starCount = 300
+    const positions = new Float32Array(starCount * 3)
+    const initialPositions = new Float32Array(starCount * 3)
     const targetPositions = new Float32Array(starCount * 3)
+    const sizes = new Float32Array(starCount)
+    const colors = new Float32Array(starCount * 3)
     
-    // Initial random positions (scattered)
+    // Colors for stars: mix of white, cyan, and teal
+    const colorPalette = [
+      new THREE.Color('#ffffff'),
+      new THREE.Color('#67e8f9'),
+      new THREE.Color('#22d3ee'),
+      new THREE.Color('#14b8a6'),
+      new THREE.Color('#5eead4'),
+    ]
+    
+    // Initial scattered positions and target sphere positions
     for (let i = 0; i < starCount; i++) {
       const i3 = i * 3
-      // Random scattered positions
-      starPositions[i3] = (Math.random() - 0.5) * 20
-      starPositions[i3 + 1] = (Math.random() - 0.5) * 20
-      starPositions[i3 + 2] = (Math.random() - 0.5) * 20
-      starSizes[i] = Math.random() * 3 + 1
       
-      // Target positions on sphere surface
-      const phi = Math.acos(-1 + (2 * i) / starCount)
-      const theta = Math.sqrt(starCount * Math.PI) * phi
-      const radius = 2.5
-      targetPositions[i3] = radius * Math.sin(phi) * Math.cos(theta)
-      targetPositions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta)
-      targetPositions[i3 + 2] = radius * Math.cos(phi)
+      // Random scattered positions (far away)
+      const scatterRadius = 15 + Math.random() * 10
+      const scatterTheta = Math.random() * Math.PI * 2
+      const scatterPhi = Math.random() * Math.PI
+      
+      initialPositions[i3] = scatterRadius * Math.sin(scatterPhi) * Math.cos(scatterTheta)
+      initialPositions[i3 + 1] = scatterRadius * Math.sin(scatterPhi) * Math.sin(scatterTheta)
+      initialPositions[i3 + 2] = scatterRadius * Math.cos(scatterPhi)
+      
+      // Copy to current positions
+      positions[i3] = initialPositions[i3]
+      positions[i3 + 1] = initialPositions[i3 + 1]
+      positions[i3 + 2] = initialPositions[i3 + 2]
+      
+      // Target positions on sphere surface (Fibonacci sphere distribution)
+      const phi = Math.acos(1 - 2 * (i + 0.5) / starCount)
+      const theta = Math.PI * (1 + Math.sqrt(5)) * i
+      const sphereRadius = 3
+      
+      targetPositions[i3] = sphereRadius * Math.sin(phi) * Math.cos(theta)
+      targetPositions[i3 + 1] = sphereRadius * Math.sin(phi) * Math.sin(theta)
+      targetPositions[i3 + 2] = sphereRadius * Math.cos(phi)
+      
+      // Random sizes
+      sizes[i] = Math.random() * 8 + 4
+      
+      // Random colors from palette
+      const color = colorPalette[Math.floor(Math.random() * colorPalette.length)]
+      colors[i3] = color.r
+      colors[i3 + 1] = color.g
+      colors[i3 + 2] = color.b
     }
 
-    starGeometry.setAttribute('position', new THREE.BufferAttribute(starPositions, 3))
-    starGeometry.setAttribute('size', new THREE.BufferAttribute(starSizes, 1))
+    const geometry = new THREE.BufferGeometry()
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+    geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1))
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3))
 
-    // Custom shader material for stars
-    const starMaterial = new THREE.ShaderMaterial({
+    // Custom shader material for glowing stars
+    const material = new THREE.ShaderMaterial({
       uniforms: {
-        color: { value: new THREE.Color('#14b8a6') },
-        time: { value: 0 }
+        uTime: { value: 0 },
+        uPixelRatio: { value: renderer.getPixelRatio() }
       },
       vertexShader: `
         attribute float size;
-        uniform float time;
+        attribute vec3 color;
+        varying vec3 vColor;
         varying float vAlpha;
+        uniform float uTime;
+        uniform float uPixelRatio;
+        
         void main() {
-          vAlpha = 0.5 + 0.5 * sin(time * 3.0 + position.x * 2.0);
+          vColor = color;
+          
+          // Twinkling effect
+          float twinkle = 0.7 + 0.3 * sin(uTime * 3.0 + position.x * 2.0 + position.y * 3.0);
+          vAlpha = twinkle;
+          
           vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-          gl_PointSize = size * (300.0 / -mvPosition.z);
+          gl_PointSize = size * uPixelRatio * (200.0 / -mvPosition.z);
           gl_Position = projectionMatrix * mvPosition;
         }
       `,
       fragmentShader: `
-        uniform vec3 color;
+        varying vec3 vColor;
         varying float vAlpha;
+        
         void main() {
-          float dist = length(gl_PointCoord - vec2(0.5));
+          // Create circular star with soft glow
+          vec2 center = gl_PointCoord - vec2(0.5);
+          float dist = length(center);
+          
           if (dist > 0.5) discard;
-          float alpha = 1.0 - smoothstep(0.0, 0.5, dist);
-          gl_FragColor = vec4(color, alpha * vAlpha);
+          
+          // Core brightness
+          float core = 1.0 - smoothstep(0.0, 0.15, dist);
+          // Glow
+          float glow = 1.0 - smoothstep(0.0, 0.5, dist);
+          
+          float alpha = (core * 1.0 + glow * 0.6) * vAlpha;
+          vec3 finalColor = vColor * (core + 0.5);
+          
+          gl_FragColor = vec4(finalColor, alpha);
         }
       `,
       transparent: true,
@@ -85,52 +139,44 @@ export function SplashScreen({ onComplete, minimumDuration = 3000 }: SplashScree
       depthWrite: false
     })
 
-    const stars = new THREE.Points(starGeometry, starMaterial)
+    const stars = new THREE.Points(geometry, material)
     scene.add(stars)
 
-    camera.position.z = 8
+    camera.position.z = 12
 
-    // Animation variables
-    let animationPhase = 0 // 0: gathering, 1: rotating sphere
-    let phaseStartTime = Date.now()
-    const gatherDuration = 1500 // 1.5 seconds to gather
-    const rotateDuration = 1000 // 1 second rotation
+    // Animation state
+    let startTime = Date.now()
+    const gatherDuration = 2000 // 2 seconds to gather
     let animationFrame: number
 
     // Animation loop
     const animate = () => {
       animationFrame = requestAnimationFrame(animate)
       
-      const currentTime = Date.now()
-      const elapsed = currentTime - phaseStartTime
-      const positions = starGeometry.attributes.position.array as Float32Array
-
-      if (animationPhase === 0) {
-        // Gathering phase - stars move towards sphere positions
-        const progress = Math.min(elapsed / gatherDuration, 1)
-        const easeProgress = 1 - Math.pow(1 - progress, 3) // ease out cubic
+      const elapsed = Date.now() - startTime
+      const positionArray = geometry.attributes.position.array as Float32Array
+      
+      if (elapsed < gatherDuration) {
+        // Gathering phase - stars converge to sphere
+        const progress = elapsed / gatherDuration
+        // Ease out cubic for smooth deceleration
+        const easeProgress = 1 - Math.pow(1 - progress, 3)
         
         for (let i = 0; i < starCount; i++) {
           const i3 = i * 3
-          const startX = (Math.random() - 0.5) * 20 * (1 - easeProgress * 0.1)
-          positions[i3] = positions[i3] + (targetPositions[i3] - positions[i3]) * 0.05
-          positions[i3 + 1] = positions[i3 + 1] + (targetPositions[i3 + 1] - positions[i3 + 1]) * 0.05
-          positions[i3 + 2] = positions[i3 + 2] + (targetPositions[i3 + 2] - positions[i3 + 2]) * 0.05
+          positionArray[i3] = initialPositions[i3] + (targetPositions[i3] - initialPositions[i3]) * easeProgress
+          positionArray[i3 + 1] = initialPositions[i3 + 1] + (targetPositions[i3 + 1] - initialPositions[i3 + 1]) * easeProgress
+          positionArray[i3 + 2] = initialPositions[i3 + 2] + (targetPositions[i3 + 2] - initialPositions[i3 + 2]) * easeProgress
         }
-        starGeometry.attributes.position.needsUpdate = true
-        
-        if (progress >= 1) {
-          animationPhase = 1
-          phaseStartTime = currentTime
-        }
-      } else if (animationPhase === 1) {
-        // Rotating sphere phase
-        stars.rotation.y += 0.02
-        stars.rotation.x += 0.005
+        geometry.attributes.position.needsUpdate = true
+      } else {
+        // Sphere formed - rotate
+        stars.rotation.y += 0.015
+        stars.rotation.x += 0.003
       }
 
-      // Update shader time uniform
-      starMaterial.uniforms.time.value = currentTime * 0.001
+      // Update time uniform for twinkling
+      material.uniforms.uTime.value = elapsed * 0.001
 
       renderer.render(scene, camera)
     }
@@ -142,6 +188,7 @@ export function SplashScreen({ onComplete, minimumDuration = 3000 }: SplashScree
       camera.aspect = window.innerWidth / window.innerHeight
       camera.updateProjectionMatrix()
       renderer.setSize(window.innerWidth, window.innerHeight)
+      material.uniforms.uPixelRatio.value = renderer.getPixelRatio()
     }
     window.addEventListener('resize', handleResize)
 
@@ -164,8 +211,8 @@ export function SplashScreen({ onComplete, minimumDuration = 3000 }: SplashScree
         containerRef.current.removeChild(renderer.domElement)
       }
       renderer.dispose()
-      starGeometry.dispose()
-      starMaterial.dispose()
+      geometry.dispose()
+      material.dispose()
     }
   }, [onComplete, minimumDuration])
 
@@ -175,32 +222,11 @@ export function SplashScreen({ onComplete, minimumDuration = 3000 }: SplashScree
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-background overflow-hidden"
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+          className="fixed inset-0 z-50 overflow-hidden"
         >
-          {/* Three.js container */}
+          {/* Three.js container - only stars animation */}
           <div ref={containerRef} className="absolute inset-0" />
-          
-          {/* Logo overlay */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1.5, duration: 0.5, ease: "easeOut" }}
-            className="relative z-10 flex flex-col items-center gap-4"
-          >
-            <div className="flex h-20 w-20 items-center justify-center rounded-2xl bg-primary shadow-lg shadow-primary/30">
-              <span className="text-4xl font-bold text-primary-foreground">ɖ</span>
-            </div>
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 2, duration: 0.5 }}
-              className="flex flex-col items-center gap-1"
-            >
-              <h1 className="text-3xl font-bold tracking-tight gradient-text">ɖyɔ̌</h1>
-              <p className="text-sm text-muted-foreground">Plateforme de Troc Académique</p>
-            </motion.div>
-          </motion.div>
         </motion.div>
       )}
     </AnimatePresence>
