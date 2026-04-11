@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server"
-import { BookOpen, Repeat, MessageSquare, Star } from "lucide-react"
+import { BookOpen, Repeat, Eye, Star } from "lucide-react"
 
 interface DashboardStatsProps {
   userId: string
@@ -21,11 +21,13 @@ export async function DashboardStats({ userId }: DashboardStatsProps) {
     .or(`giver_id.eq.${userId},receiver_id.eq.${userId}`)
     .eq("status", "completed")
 
-  // Get conversations count
-  const { count: conversationsCount } = await supabase
-    .from("conversation_participants")
-    .select("*", { count: "exact", head: true })
+  // Get total views on user's listings
+  const { data: listingsData } = await supabase
+    .from("listings")
+    .select("views")
     .eq("user_id", userId)
+  
+  const totalViews = listingsData?.reduce((sum, listing) => sum + (listing.views || 0), 0) || 0
 
   // Get average rating
   const { data: profile } = await supabase
@@ -52,9 +54,9 @@ export async function DashboardStats({ userId }: DashboardStatsProps) {
       iconColor: "text-emerald-500",
     },
     {
-      icon: MessageSquare,
-      label: "Conversations",
-      value: conversationsCount || 0,
+      icon: Eye,
+      label: "Vues Total",
+      value: totalViews,
       color: "from-cyan-500 to-blue-600",
       bgColor: "bg-cyan-500/10",
       iconColor: "text-cyan-500",

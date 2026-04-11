@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { UserPlus, Search, MessageCircle, Repeat } from "lucide-react"
+import { UserPlus, Search, MapPin, Repeat } from "lucide-react"
 
 const steps = [
   {
@@ -17,10 +17,10 @@ const steps = [
     description: "Recherchez les ressources dont vous avez besoin ou publiez les articles que vous souhaitez échanger.",
   },
   {
-    icon: MessageCircle,
+    icon: MapPin,
     step: "03",
-    title: "Connecter & Discuter",
-    description: "Envoyez des messages directement aux autres étudiants. Discutez des détails et organisez l&apos;échange.",
+    title: "Trouver & Rencontrer",
+    description: "Utilisez la carte pour trouver des ressources proches. Rencontrez-vous sur le campus pour échanger.",
   },
   {
     icon: Repeat,

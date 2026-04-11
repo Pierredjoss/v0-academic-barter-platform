@@ -13,11 +13,8 @@ import {
   Eye,
   Calendar,
   Star,
-  MessageSquare,
   Repeat,
   Flag,
-  MoreHorizontal,
-  Trash2,
   Edit,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -123,50 +120,6 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
 
     setIsFavorited(!isFavorited)
     setLoading(false)
-  }
-
-  const handleContact = async () => {
-    // Create or get conversation
-    const supabase = createClient()
-    
-    // Check if conversation exists
-    const { data: existingParticipation } = await supabase
-      .from("conversation_participants")
-      .select("conversation_id")
-      .eq("user_id", currentUserId)
-      .single()
-
-    if (existingParticipation) {
-      // Check if other user is in same conversation
-      const { data: otherParticipation } = await supabase
-        .from("conversation_participants")
-        .select("conversation_id")
-        .eq("conversation_id", existingParticipation.conversation_id)
-        .eq("user_id", listing.profiles?.id)
-        .single()
-
-      if (otherParticipation) {
-        router.push(`/messages?conversation=${existingParticipation.conversation_id}`)
-        return
-      }
-    }
-
-    // Create new conversation
-    const { data: conversation } = await supabase
-      .from("conversations")
-      .insert({ listing_id: listing.id })
-      .select()
-      .single()
-
-    if (conversation) {
-      // Add participants
-      await supabase.from("conversation_participants").insert([
-        { conversation_id: conversation.id, user_id: currentUserId },
-        { conversation_id: conversation.id, user_id: listing.profiles?.id },
-      ])
-
-      router.push(`/messages?conversation=${conversation.id}`)
-    }
   }
 
   return (
@@ -307,9 +260,8 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
             )}
 
             {!isOwner && (
-              <Button className="w-full gap-2" onClick={handleContact}>
-                <MessageSquare className="h-4 w-4" />
-                Contact
+              <Button className="w-full gap-2" disabled variant="outline">
+                <span className="text-muted-foreground">Contact (bientôt)</span>
               </Button>
             )}
 

@@ -82,18 +82,15 @@ export function DashboardHeader({ user, profile, onMenuClick }: DashboardHeaderP
 
       {/* Right side - Actions */}
       <div className="flex items-center gap-2">
-        {/* Notifications */}
+        {/* Notifications - désactivé pour l'instant */}
         <Button 
           variant="ghost" 
           size="icon" 
-          className="relative shrink-0"
-          asChild
+          className="relative shrink-0 opacity-50 cursor-not-allowed"
+          disabled
         >
-          <Link href="/messages">
-            <Bell className="h-5 w-5" />
-            <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-cyan-500" />
-            <span className="sr-only">Notifications</span>
-          </Link>
+          <Bell className="h-5 w-5" />
+          <span className="sr-only">Notifications (bientôt)</span>
         </Button>
 
         {/* Profile Avatar */}

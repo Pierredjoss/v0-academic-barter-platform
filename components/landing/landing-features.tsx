@@ -5,7 +5,7 @@ import {
   Zap, 
   Shield, 
   MapPin, 
-  MessageSquare, 
+  Infinity,
   Star, 
   Smartphone 
 } from "lucide-react"
@@ -17,9 +17,9 @@ const features = [
     description: "Trouvez des étudiants et des ressources près de votre campus. Échangez en personne ou organisez une livraison.",
   },
   {
-    icon: MessageSquare,
-    title: "Messagerie en Temps Réel",
-    description: "Discutez directement avec d&apos;autres étudiants. Négociez les échanges et coordonnez les rencontres.",
+    icon: Infinity,
+    title: "Annonces Illimitées",
+    description: "Publiez autant d&apos;annonces que vous souhaitez. Gratuit et sans limite pour tous les étudiants.",
   },
   {
     icon: Shield,

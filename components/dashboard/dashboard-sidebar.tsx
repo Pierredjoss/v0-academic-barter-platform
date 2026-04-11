@@ -10,15 +10,12 @@ import {
   Home,
   Compass,
   Plus,
-  MessageSquare,
   MapPin,
   User,
   Settings,
   LogOut,
   X,
   Star,
-  BookOpen,
-  Heart,
 } from "lucide-react"
 import type { User as SupabaseUser } from "@supabase/supabase-js"
 
@@ -44,7 +41,6 @@ const mainNavItems = [
   { href: "/dashboard", icon: Home, label: "Tableau de Bord" },
   { href: "/explore", icon: Compass, label: "Explorer" },
   { href: "/publish", icon: Plus, label: "Publier", highlight: true },
-  { href: "/messages", icon: MessageSquare, label: "Messages" },
 ]
 
 const secondaryNavItems = [

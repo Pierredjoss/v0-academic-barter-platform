@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { Home, Compass, Plus, MessageSquare, User } from "lucide-react"
+import { Home, Compass, Plus, User, MapPin } from "lucide-react"
 
 interface DashboardMobileNavProps {
   className?: string
@@ -13,7 +13,7 @@ const navItems = [
   { href: "/dashboard", icon: Home, label: "Accueil" },
   { href: "/explore", icon: Compass, label: "Explorer" },
   { href: "/publish", icon: Plus, label: "Publier", isCenter: true },
-  { href: "/messages", icon: MessageSquare, label: "Messages" },
+  { href: "/map", icon: MapPin, label: "Carte" },
   { href: "/profile", icon: User, label: "Profil" },
 ]
 
