@@ -84,19 +84,43 @@ export default function SignUpPage() {
         return
       }
 
-      // 3. Mettre à jour le profil créé automatiquement par le trigger
-      const { error: profileError } = await supabase
+      // 3. Créer ou mettre à jour le profil (si le trigger a échoué)
+      const { data: existingProfile } = await supabase
         .from("profiles")
-        .update({
-          full_name: formData.fullName,
-          university: formData.university,
-          city: formData.city,
-          email: formData.email,
-        })
+        .select("id")
         .eq("id", signUpData.user?.id)
+        .single()
 
-      if (profileError) {
-        console.error("Erreur mise à jour profil:", profileError)
+      if (existingProfile) {
+        // Mettre à jour le profil existant
+        const { error: updateError } = await supabase
+          .from("profiles")
+          .update({
+            full_name: formData.fullName,
+            university: formData.university,
+            city: formData.city,
+            email: formData.email,
+          })
+          .eq("id", signUpData.user?.id)
+
+        if (updateError) {
+          console.error("Erreur mise à jour profil:", updateError)
+        }
+      } else {
+        // Créer le profil manuellement si le trigger n'a pas fonctionné
+        const { error: insertError } = await supabase
+          .from("profiles")
+          .insert({
+            id: signUpData.user?.id,
+            full_name: formData.fullName,
+            university: formData.university,
+            city: formData.city,
+            email: formData.email,
+          })
+
+        if (insertError) {
+          console.error("Erreur création profil:", insertError)
+        }
       }
 
       // 4. Redirection directe vers le dashboard
@@ -172,7 +196,7 @@ export default function SignUpPage() {
                   id="email"
                   name="email"
                   type="email"
-                  placeholder="prenom@uac.bj"
+                  placeholder="prenom.nom@universite.edu.bj"
                   value={formData.email}
                   onChange={handleChange}
                   required

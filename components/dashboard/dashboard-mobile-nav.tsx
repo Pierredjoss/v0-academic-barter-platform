@@ -10,11 +10,11 @@ interface DashboardMobileNavProps {
 }
 
 const navItems = [
-  { href: "/dashboard", icon: Home, label: "Home" },
-  { href: "/explore", icon: Compass, label: "Explore" },
-  { href: "/publish", icon: Plus, label: "Publish", isCenter: true },
+  { href: "/dashboard", icon: Home, label: "Accueil" },
+  { href: "/explore", icon: Compass, label: "Explorer" },
+  { href: "/publish", icon: Plus, label: "Publier", isCenter: true },
   { href: "/messages", icon: MessageSquare, label: "Messages" },
-  { href: "/profile", icon: User, label: "Profile" },
+  { href: "/profile", icon: User, label: "Profil" },
 ]
 
 export function DashboardMobileNav({ className }: DashboardMobileNavProps) {
@@ -22,21 +22,21 @@ export function DashboardMobileNav({ className }: DashboardMobileNavProps) {
 
   return (
     <nav className={cn(
-      "fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+      "fixed bottom-0 left-0 right-0 z-50 border-t border-border/50 bg-background/95 backdrop-blur-xl",
       className
     )}>
-      <div className="flex h-16 items-center justify-around px-4 pb-safe">
+      <div className="flex h-16 items-center justify-around px-2 pb-safe">
         {navItems.map((item) => {
-          const isActive = pathname === item.href
+          const isActive = pathname === item.href || pathname.startsWith(`${item.href}/`)
           
           if (item.isCenter) {
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center justify-center"
+                className="relative flex items-center justify-center"
               >
-                <div className="flex h-12 w-12 -translate-y-2 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg">
+                <div className="flex h-14 w-14 -translate-y-3 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-teal-600 text-white shadow-lg shadow-cyan-500/30 transition-transform active:scale-95">
                   <item.icon className="h-6 w-6" />
                 </div>
               </Link>
@@ -49,10 +49,12 @@ export function DashboardMobileNav({ className }: DashboardMobileNavProps) {
               href={item.href}
               className={cn(
                 "flex flex-col items-center gap-1 px-3 py-2 transition-colors",
-                isActive ? "text-primary" : "text-muted-foreground"
+                isActive 
+                  ? "text-cyan-500" 
+                  : "text-muted-foreground hover:text-foreground"
               )}
             >
-              <item.icon className="h-5 w-5" />
+              <item.icon className={cn("h-5 w-5", isActive && "stroke-[2.5]")} />
               <span className="text-[10px] font-medium">{item.label}</span>
             </Link>
           )

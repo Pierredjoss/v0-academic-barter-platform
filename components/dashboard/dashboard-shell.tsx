@@ -28,40 +28,51 @@ export function DashboardShell({ user, profile, children }: DashboardShellProps)
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Desktop Sidebar */}
-      <DashboardSidebar 
-        user={user} 
-        profile={profile}
-        className="hidden lg:flex" 
-      />
+      {/* Desktop Sidebar - Fixed */}
+      <aside className="fixed left-0 top-0 z-40 hidden h-screen w-64 lg:block">
+        <DashboardSidebar 
+          user={user} 
+          profile={profile}
+          className="h-full" 
+        />
+      </aside>
 
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Mobile Sidebar */}
-      <DashboardSidebar
-        user={user}
-        profile={profile}
-        className={`fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 lg:hidden ${
+      <aside 
+        className={`fixed left-0 top-0 z-50 h-screen w-64 transform transition-transform duration-300 ease-in-out lg:hidden ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
-        onClose={() => setSidebarOpen(false)}
-      />
+      >
+        <DashboardSidebar
+          user={user}
+          profile={profile}
+          className="h-full"
+          onClose={() => setSidebarOpen(false)}
+        />
+      </aside>
 
-      {/* Main Content */}
-      <div className="lg:pl-64">
+      {/* Main Content Area */}
+      <div className="flex min-h-screen flex-col lg:ml-64">
+        {/* Header - Sticky */}
         <DashboardHeader 
           user={user} 
           profile={profile}
           onMenuClick={() => setSidebarOpen(true)} 
         />
-        <main className="min-h-[calc(100vh-4rem)] p-4 pb-24 lg:p-6 lg:pb-6">
-          {children}
+        
+        {/* Main Content */}
+        <main className="flex-1 p-4 pb-20 lg:p-6 lg:pb-6">
+          <div className="mx-auto max-w-7xl">
+            {children}
+          </div>
         </main>
       </div>
 

@@ -90,7 +90,7 @@ export default function LoginPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="nom@uac.bj"
+                  placeholder="prenom.nom@uac.edu.bj"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required

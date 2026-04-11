@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Plus, Search, MapPin, BookOpen } from "lucide-react"
+import { Plus, Search, MapPin, BookOpen, ArrowUpRight } from "lucide-react"
 
 const actions = [
   {
@@ -10,28 +10,32 @@ const actions = [
     icon: Plus,
     label: "Publier",
     description: "Créer une annonce",
-    color: "bg-primary text-primary-foreground",
+    gradient: "from-cyan-500 to-teal-600",
+    shadow: "shadow-cyan-500/25",
   },
   {
     href: "/explore",
     icon: Search,
     label: "Explorer",
     description: "Trouver des ressources",
-    color: "bg-violet-500 text-white",
+    gradient: "from-violet-500 to-purple-600",
+    shadow: "shadow-violet-500/25",
   },
   {
     href: "/map",
     icon: MapPin,
     label: "Proximité",
     description: "Voir sur la carte",
-    color: "bg-emerald-500 text-white",
+    gradient: "from-emerald-500 to-teal-600",
+    shadow: "shadow-emerald-500/25",
   },
   {
-    href: "/explore?category=book",
+    href: "/explore?category=books",
     icon: BookOpen,
     label: "Livres",
     description: "Parcourir les livres",
-    color: "bg-amber-500 text-white",
+    gradient: "from-amber-500 to-orange-600",
+    shadow: "shadow-amber-500/25",
   },
 ]
 
@@ -47,13 +51,24 @@ export function DashboardQuickActions() {
         <Link
           key={action.href}
           href={action.href}
-          className="group rounded-xl border border-border bg-card p-4 transition-all hover:border-primary/50 hover:shadow-md"
+          className="group relative overflow-hidden rounded-xl border border-border/50 bg-card p-4 transition-all duration-300 hover:border-transparent hover:shadow-lg"
         >
-          <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-lg ${action.color}`}>
+          {/* Hover gradient background */}
+          <div className={`absolute inset-0 bg-gradient-to-br ${action.gradient} opacity-0 transition-opacity duration-300 group-hover:opacity-5`} />
+          
+          {/* Icon container */}
+          <div className={`relative mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${action.gradient} text-white shadow-lg ${action.shadow} transition-transform duration-300 group-hover:scale-110`}>
             <action.icon className="h-5 w-5" />
           </div>
-          <p className="font-semibold">{action.label}</p>
-          <p className="text-xs text-muted-foreground">{action.description}</p>
+          
+          {/* Text content */}
+          <div className="relative">
+            <div className="flex items-center gap-1">
+              <p className="font-semibold">{action.label}</p>
+              <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-opacity group-hover:opacity-100" />
+            </div>
+            <p className="text-xs text-muted-foreground">{action.description}</p>
+          </div>
         </Link>
       ))}
     </motion.div>

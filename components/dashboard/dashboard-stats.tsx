@@ -39,29 +39,33 @@ export async function DashboardStats({ userId }: DashboardStatsProps) {
       icon: BookOpen,
       label: "Mes Annonces",
       value: listingsCount || 0,
-      color: "text-violet-500",
+      color: "from-violet-500 to-purple-600",
       bgColor: "bg-violet-500/10",
+      iconColor: "text-violet-500",
     },
     {
       icon: Repeat,
       label: "Échanges",
       value: exchangesCount || 0,
-      color: "text-emerald-500",
+      color: "from-emerald-500 to-teal-600",
       bgColor: "bg-emerald-500/10",
+      iconColor: "text-emerald-500",
     },
     {
       icon: MessageSquare,
       label: "Conversations",
       value: conversationsCount || 0,
-      color: "text-cyan-500",
+      color: "from-cyan-500 to-blue-600",
       bgColor: "bg-cyan-500/10",
+      iconColor: "text-cyan-500",
     },
     {
       icon: Star,
-      label: "Note",
+      label: "Note Moyenne",
       value: profile?.average_rating?.toFixed(1) || "0.0",
-      color: "text-amber-500",
+      color: "from-amber-500 to-orange-600",
       bgColor: "bg-amber-500/10",
+      iconColor: "text-amber-500",
     },
   ]
 
@@ -70,14 +74,17 @@ export async function DashboardStats({ userId }: DashboardStatsProps) {
       {stats.map((stat, index) => (
         <div
           key={index}
-          className="rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/50 hover:shadow-md"
+          className="group relative overflow-hidden rounded-xl border border-border/50 bg-card p-5 transition-all hover:border-cyan-500/30 hover:shadow-lg hover:shadow-cyan-500/5"
         >
-          <div className="flex items-center gap-4">
-            <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${stat.bgColor}`}>
-              <stat.icon className={`h-6 w-6 ${stat.color}`} />
+          {/* Background gradient on hover */}
+          <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 transition-opacity group-hover:opacity-5`} />
+          
+          <div className="relative flex items-center gap-4">
+            <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${stat.bgColor} transition-colors group-hover:bg-opacity-20`}>
+              <stat.icon className={`h-6 w-6 ${stat.iconColor}`} />
             </div>
-            <div>
-              <p className="text-2xl font-bold">{stat.value}</p>
+            <div className="min-w-0">
+              <p className="text-2xl font-bold tracking-tight">{stat.value}</p>
               <p className="text-sm text-muted-foreground">{stat.label}</p>
             </div>
           </div>
