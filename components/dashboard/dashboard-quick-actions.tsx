@@ -30,10 +30,10 @@ const actions = [
     shadow: "shadow-emerald-500/25",
   },
   {
-    href: "/explore?category=books",
+    href: "/explore?category=articles",
     icon: BookOpen,
-    label: "Livres",
-    description: "Parcourir les livres",
+    label: "Articles",
+    description: "Parcourir les articles",
     gradient: "from-amber-500 to-orange-600",
     shadow: "shadow-amber-500/25",
   },

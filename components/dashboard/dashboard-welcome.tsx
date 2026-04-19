@@ -19,7 +19,7 @@ export function DashboardWelcome({ profile }: DashboardWelcomeProps) {
     return "Bonsoir"
   }
 
-  const firstName = profile?.full_name?.split(" ")[0] || "Étudiant"
+  const displayName = profile?.full_name?.trim()
 
   return (
     <motion.div
@@ -29,7 +29,11 @@ export function DashboardWelcome({ profile }: DashboardWelcomeProps) {
       className="space-y-1"
     >
       <h1 className="text-2xl font-bold sm:text-3xl">
-        {getGreeting()}, <span className="gradient-text">{firstName}</span>
+        {displayName ? (
+          <>{getGreeting()}, <span className="gradient-text">{displayName}</span></>
+        ) : (
+          <>{getGreeting()} !</>
+        )}
       </h1>
       <p className="text-muted-foreground">
         {profile?.university 

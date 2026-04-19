@@ -61,7 +61,7 @@ export function DashboardSidebar({ user, profile, className, onClose }: Dashboar
   }
 
   const userInitial = profile?.full_name?.charAt(0) || user.email?.charAt(0)?.toUpperCase() || "U"
-  const userName = profile?.full_name || "Étudiant"
+  const userName = profile?.full_name || "Utilisateur"
   const university = profile?.university || "Université"
 
   return (
