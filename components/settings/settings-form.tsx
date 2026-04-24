@@ -44,26 +44,43 @@ export function SettingsForm({ profile, userEmail }: SettingsFormProps) {
 
     try {
       const supabase = createClient()
-      const { error: updateError } = await supabase
-        .from("profiles")
-        .update({
-          full_name: formData.fullName,
-          university: formData.university,
-          city: formData.city,
-          bio: formData.bio,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("id", profile!.id)
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
 
-      if (updateError) {
-        setError(updateError.message)
+      if (userError) {
+        setError(userError.message)
+        return
+      }
+
+      if (!user) {
+        setError("Vous devez être connecté")
+        return
+      }
+
+      const { error: upsertError } = await supabase
+        .from("profiles")
+        .upsert(
+          {
+            id: user.id,
+            full_name: formData.fullName,
+            university: formData.university,
+            city: formData.city,
+            bio: formData.bio,
+            email: user.email || null,
+            updated_at: new Date().toISOString(),
+          },
+          { onConflict: "id" }
+        )
+
+      if (upsertError) {
+        setError(upsertError.message)
         return
       }
 
       setSuccess(true)
       router.refresh()
-    } catch {
-      setError("Une erreur inattendue s'est produite")
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Une erreur inattendue s'est produite"
+      setError(message)
     } finally {
       setLoading(false)
     }
