@@ -92,7 +92,7 @@ export function ProfileView({ profile, listings, listingsCount, reviews }: Profi
 
           {/* Info */}
           <div className="mt-8 sm:mt-4">
-            <h1 className="text-2xl font-bold">{profile?.full_name || "Étudiant"}</h1>
+            <h1 className="text-2xl font-bold">{profile?.full_name || "Utilisateur"}</h1>
             
             <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
               {profile?.university && (

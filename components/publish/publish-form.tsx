@@ -37,7 +37,6 @@ const conditions = [
 const exchangeTypes = [
   { value: "in_person", label: "En Personne" },
   { value: "delivery", label: "Livraison" },
-  { value: "both", label: "Les Deux" },
 ]
 
 interface Category {
@@ -57,6 +56,7 @@ export function PublishForm({ categories }: PublishFormProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
+  const [photos, setPhotos] = useState<File[]>([])
   
   const [formData, setFormData] = useState({
     title: "",
@@ -66,6 +66,12 @@ export function PublishForm({ categories }: PublishFormProps) {
     exchangeType: "in_person",
     city: "",
   })
+
+  const canSubmit =
+    !loading &&
+    !!formData.title &&
+    !!formData.condition &&
+    (categories.length === 0 || !!formData.categoryId)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -81,20 +87,77 @@ export function PublishForm({ categories }: PublishFormProps) {
         return
       }
 
-      const { error: insertError } = await supabase.from("listings").insert({
-        user_id: user.id,
-        title: formData.title,
-        description: formData.description,
-        category_id: formData.categoryId,
-        condition: formData.condition,
-        exchange_type: formData.exchangeType,
-        city: formData.city,
-        status: "active",
-      })
+      if (categories.length > 0 && !formData.categoryId) {
+        setError("Veuillez choisir une catégorie")
+        return
+      }
+
+      const { data: insertedListing, error: insertError } = await supabase
+        .from("listings")
+        .insert({
+          user_id: user.id,
+          title: formData.title,
+          description: formData.description,
+          category_id: formData.categoryId || null,
+          condition: formData.condition,
+          exchange_type: formData.exchangeType,
+          city: formData.city,
+          status: "active",
+          images: [],
+        })
+        .select("id")
+        .single()
 
       if (insertError) {
         setError(insertError.message)
         return
+      }
+
+      const listingId = insertedListing?.id
+      if (!listingId) {
+        setError("Une erreur inattendue s'est produite")
+        return
+      }
+
+      if (photos.length > 0) {
+        const bucket = supabase.storage.from("listing-images")
+        const uploadedUrls: string[] = []
+
+        try {
+          for (const file of photos) {
+            const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-")
+            const path = `${user.id}/${listingId}/${Date.now()}-${safeName}`
+
+            const { error: uploadError } = await bucket.upload(path, file, {
+              cacheControl: "3600",
+              upsert: false,
+            })
+
+            if (uploadError) {
+              throw uploadError
+            }
+
+            const { data } = bucket.getPublicUrl(path)
+            if (!data?.publicUrl) {
+              throw new Error("Impossible de récupérer l'URL de l'image")
+            }
+            uploadedUrls.push(data.publicUrl)
+          }
+
+          const { error: updateError } = await supabase
+            .from("listings")
+            .update({ images: uploadedUrls })
+            .eq("id", listingId)
+
+          if (updateError) {
+            throw updateError
+          }
+        } catch (err) {
+          await supabase.from("listings").delete().eq("id", listingId)
+          const message = err instanceof Error ? err.message : "Une erreur inattendue s'est produite"
+          setError(message)
+          return
+        }
       }
 
       setSuccess(true)
@@ -173,35 +236,56 @@ export function PublishForm({ categories }: PublishFormProps) {
       {/* Category */}
       <div className="space-y-2">
         <label className="text-sm font-medium">
-          Catégorie <span className="text-destructive">*</span>
+          Catégorie{categories.length > 0 && <span className="text-destructive">*</span>}
         </label>
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-          {categories.map((category) => {
-            const Icon = categoryIcons[category.icon] || Package
-            const isSelected = formData.categoryId === category.id
-            return (
-              <button
-                key={category.id}
-                type="button"
-                onClick={() => setFormData({ ...formData, categoryId: category.id })}
-                className={cn(
-                  "flex items-center gap-2 rounded-lg border p-3 text-left transition-all",
-                  isSelected
-                    ? "border-primary bg-primary/5"
-                    : "border-border hover:border-primary/50"
-                )}
-              >
-                <div
-                  className="flex h-8 w-8 items-center justify-center rounded-lg"
-                  style={{ backgroundColor: `${category.color}20` }}
+        {categories.length === 0 ? (
+          <div className="rounded-lg border border-border bg-muted/30 p-3 text-sm text-muted-foreground">
+            Aucune catégorie disponible pour le moment.
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {categories.map((category) => {
+              const Icon = categoryIcons[category.icon] || Package
+              const isSelected = formData.categoryId === category.id
+              return (
+                <button
+                  key={category.id}
+                  type="button"
+                  onClick={() => setFormData({ ...formData, categoryId: category.id })}
+                  className={cn(
+                    "flex items-center gap-2 rounded-lg border p-3 text-left transition-all",
+                    isSelected
+                      ? "border-primary bg-primary/5"
+                      : "border-border hover:border-primary/50"
+                  )}
                 >
-                  <Icon className="h-4 w-4" style={{ color: category.color }} />
-                </div>
-                <span className="text-sm font-medium">{category.name_fr}</span>
-              </button>
-            )
-          })}
-        </div>
+                  <div
+                    className="flex h-8 w-8 items-center justify-center rounded-lg"
+                    style={{ backgroundColor: `${category.color}20` }}
+                  >
+                    <Icon className="h-4 w-4" style={{ color: category.color }} />
+                  </div>
+                  <span className="text-sm font-medium">{category.name_fr}</span>
+                </button>
+              )
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Photos */}
+      <div className="space-y-2">
+        <label htmlFor="photos" className="text-sm font-medium">
+          Photos (optionnel)
+        </label>
+        <Input
+          id="photos"
+          type="file"
+          accept="image/*"
+          multiple
+          onChange={(e) => setPhotos(Array.from(e.target.files || []))}
+          className="h-12"
+        />
       </div>
 
       {/* Condition */}
@@ -287,7 +371,7 @@ export function PublishForm({ categories }: PublishFormProps) {
         <Button
           type="submit"
           className="flex-1 gap-2"
-          disabled={loading || !formData.title || !formData.categoryId || !formData.condition}
+          disabled={!canSubmit}
         >
           {loading ? (
             <Loader2 className="h-4 w-4 animate-spin" />
