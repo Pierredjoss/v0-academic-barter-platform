@@ -88,6 +88,28 @@ export function PublishForm({ categories }: PublishFormProps) {
         return
       }
 
+      const { error: profileUpsertError } = await supabase
+        .from("profiles")
+        .upsert(
+          {
+            id: user.id,
+            email: user.email ?? null,
+            full_name:
+              typeof user.user_metadata?.full_name === "string"
+                ? user.user_metadata.full_name
+                : null,
+          },
+          { onConflict: "id" },
+        )
+
+      if (profileUpsertError) {
+        const extra = [profileUpsertError.details, profileUpsertError.hint, profileUpsertError.code]
+          .filter(Boolean)
+          .join(" | ")
+        setError(extra ? `${profileUpsertError.message} (${extra})` : profileUpsertError.message)
+        return
+      }
+
       if (categories.length > 0 && !formData.categoryId) {
         setError("Veuillez choisir une catégorie")
         return
@@ -106,24 +128,40 @@ export function PublishForm({ categories }: PublishFormProps) {
 
       const categoryId = formData.categoryId && isValidUUID(formData.categoryId) ? formData.categoryId : null
 
+      const payload: {
+        user_id: string
+        title: string
+        description: string
+        category_id?: string
+        condition: string
+        exchange_type: string
+        city: string
+        status: string
+      } = {
+        user_id: user.id,
+        title: formData.title,
+        description: formData.description,
+        condition: formData.condition,
+        exchange_type: formData.exchangeType,
+        city: formData.city,
+        status: "active",
+      }
+
+      if (categoryId) {
+        payload.category_id = categoryId
+      }
+
       const { data: insertedListing, error: insertError } = await supabase
         .from("listings")
-        .insert({
-          user_id: user.id,
-          title: formData.title,
-          description: formData.description,
-          category_id: categoryId,
-          condition: formData.condition,
-          exchange_type: formData.exchangeType,
-          city: formData.city,
-          status: "active",
-          images: [],
-        })
+        .insert(payload)
         .select("id")
         .single()
 
       if (insertError) {
-        setError(insertError.message)
+        const extra = [insertError.details, insertError.hint, insertError.code]
+          .filter(Boolean)
+          .join(" | ")
+        setError(extra ? `${insertError.message} (${extra})` : insertError.message)
         return
       }
 
