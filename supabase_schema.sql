@@ -205,6 +205,47 @@ ALTER TABLE conversation_participants ENABLE ROW LEVEL SECURITY;
 ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE exchanges ENABLE ROW LEVEL SECURITY;
 
+INSERT INTO storage.buckets (id, name, public)
+VALUES ('listing-images', 'listing-images', true)
+ON CONFLICT (id) DO UPDATE SET public = EXCLUDED.public;
+
+DROP POLICY IF EXISTS "listing-images select public" ON storage.objects;
+CREATE POLICY "listing-images select public"
+  ON storage.objects FOR SELECT
+  USING (bucket_id = 'listing-images');
+
+DROP POLICY IF EXISTS "listing-images insert own folder" ON storage.objects;
+CREATE POLICY "listing-images insert own folder"
+  ON storage.objects FOR INSERT
+  WITH CHECK (
+    bucket_id = 'listing-images'
+    AND auth.role() = 'authenticated'
+    AND (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+DROP POLICY IF EXISTS "listing-images update own folder" ON storage.objects;
+CREATE POLICY "listing-images update own folder"
+  ON storage.objects FOR UPDATE
+  USING (
+    bucket_id = 'listing-images'
+    AND auth.role() = 'authenticated'
+    AND (storage.foldername(name))[1] = auth.uid()::text
+  )
+  WITH CHECK (
+    bucket_id = 'listing-images'
+    AND auth.role() = 'authenticated'
+    AND (storage.foldername(name))[1] = auth.uid()::text
+  );
+
+DROP POLICY IF EXISTS "listing-images delete own folder" ON storage.objects;
+CREATE POLICY "listing-images delete own folder"
+  ON storage.objects FOR DELETE
+  USING (
+    bucket_id = 'listing-images'
+    AND auth.role() = 'authenticated'
+    AND (storage.foldername(name))[1] = auth.uid()::text
+  );
+
 -- Profiles: Users can read all profiles, update only their own
 DROP POLICY IF EXISTS "Profiles are viewable by everyone" ON profiles;
 CREATE POLICY "Profiles are viewable by everyone"

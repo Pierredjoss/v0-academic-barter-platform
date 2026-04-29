@@ -43,6 +43,13 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
+  const isListingEditRoute = /^\/listing\/[^/]+\/edit$/.test(request.nextUrl.pathname)
+  if (isListingEditRoute && !user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/auth/login'
+    return NextResponse.redirect(url)
+  }
+
   // Redirect authenticated users away from auth pages
   if (
     (request.nextUrl.pathname === '/auth/login' || request.nextUrl.pathname === '/auth/sign-up') &&

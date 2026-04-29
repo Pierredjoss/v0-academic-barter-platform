@@ -33,21 +33,23 @@ export default async function ListingPage({ params }: ListingPageProps) {
     .eq("id", id)
 
   // Check if favorited
-  const { data: favorite } = await supabase
-    .from("favorites")
-    .select("id")
-    .eq("user_id", user!.id)
-    .eq("listing_id", id)
-    .single()
+  const { data: favorite } = user
+    ? await supabase
+        .from("favorites")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("listing_id", id)
+        .single()
+    : { data: null }
 
-  const isOwner = listing.user_id === user!.id
+  const isOwner = !!user && listing.user_id === user.id
 
   return (
     <ListingDetail 
       listing={listing} 
       isFavorited={!!favorite} 
       isOwner={isOwner}
-      currentUserId={user!.id}
+      currentUserId={user?.id ?? ""}
     />
   )
 }
