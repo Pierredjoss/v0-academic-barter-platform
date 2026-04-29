@@ -26,7 +26,7 @@ export default async function EditListingPage({ params }: EditListingPageProps) 
   }
 
   if (listing.user_id !== user.id) {
-    redirect(`/dashboard/listing/${id}`)
+    redirect(`/listing/${id}`)
   }
 
   const { data: categories } = await supabase

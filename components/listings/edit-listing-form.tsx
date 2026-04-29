@@ -187,7 +187,7 @@ export function EditListingForm({ listing, categories, currentUserId }: EditList
 
       setSuccess(true)
       setTimeout(() => {
-        router.push(`/dashboard/listing/${listing.id}`)
+        router.push(`/listing/${listing.id}`)
         router.refresh()
       }, 800)
     } catch (err) {
