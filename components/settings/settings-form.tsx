@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
-import { Loader2, Save, User, MapPin, GraduationCap, Mail } from "lucide-react"
+import { Loader2, Save, User, MapPin, GraduationCap, Mail, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -184,7 +184,7 @@ export function SettingsForm({ profile, userEmail }: SettingsFormProps) {
         </label>
         <Textarea
           id="bio"
-          placeholder="Parlez de vous aux autres étudiants..."
+          placeholder="Parlez de vous aux autres utilisateurs..."
           value={formData.bio}
           onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
           rows={4}
@@ -206,6 +206,51 @@ export function SettingsForm({ profile, userEmail }: SettingsFormProps) {
           </>
         )}
       </Button>
+
+      {/* Déconnexion */}
+      <div className="border-t border-border pt-6">
+        <SignOutSection />
+      </div>
     </motion.form>
+  )
+}
+
+function SignOutSection() {
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+
+  const handleSignOut = async () => {
+    setLoading(true)
+    try {
+      const supabase = createClient()
+      await supabase.auth.signOut()
+      router.push("/")
+      router.refresh()
+    } catch {
+      // Silent fail
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="space-y-3">
+      <h3 className="text-sm font-medium text-muted-foreground">Session</h3>
+      <Button
+        variant="outline"
+        className="w-full gap-2 border-destructive/50 text-destructive hover:bg-destructive/10 hover:text-destructive"
+        onClick={handleSignOut}
+        disabled={loading}
+      >
+        {loading ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <>
+            <LogOut className="h-4 w-4" />
+            Se Déconnecter
+          </>
+        )}
+      </Button>
+    </div>
   )
 }

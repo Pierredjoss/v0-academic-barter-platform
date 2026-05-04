@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { PublishForm } from "@/components/publish/publish-form"
 
@@ -42,6 +43,34 @@ const DEFAULT_CATEGORIES = [
 
 export default async function PublishPage() {
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect("/auth/login")
+  }
+
+  // Vérifier si l'utilisateur a un paiement récent (moins de 24h)
+  const { data: recentPayment } = await supabase
+    .from("payments")
+    .select("*")
+    .eq("user_id", user.id)
+    .eq("status", "completed")
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .single()
+
+  const hasValidPayment = () => {
+    if (!recentPayment) return false
+    const paymentTime = new Date(recentPayment.created_at).getTime()
+    const now = new Date().getTime()
+    const hoursDiff = (now - paymentTime) / (1000 * 60 * 60)
+    return hoursDiff < 24
+  }
+
+  // Rediriger vers la page de paiement si pas de paiement valide
+  if (!hasValidPayment()) {
+    redirect("/publish/payment")
+  }
 
   const { data: dbCategories } = await supabase
     .from("categories")
@@ -58,7 +87,7 @@ export default async function PublishPage() {
           <span className="gradient-text">Publier</span> une Annonce
         </h1>
         <p className="text-muted-foreground">
-          Partagez vos ressources académiques avec d&apos;autres étudiants
+          Partagez vos ressources académiques avec d&apos;autres utilisateurs
         </p>
       </div>
 

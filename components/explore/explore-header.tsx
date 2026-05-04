@@ -14,7 +14,7 @@ export function ExploreHeader() {
         <span className="gradient-text">Explorer</span> les Annonces
       </h1>
       <p className="text-muted-foreground">
-        Découvrez des ressources académiques d&apos;étudiants près de chez vous
+        Découvrez des ressources académiques d&apos;utilisateurs près de chez vous
       </p>
     </motion.div>
   )

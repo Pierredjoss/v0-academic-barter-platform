@@ -66,9 +66,9 @@ export async function ExploreGrid({ params }: ExploreGridProps) {
         <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
           <Search className="h-6 w-6 text-muted-foreground" />
         </div>
-        <h3 className="mb-1 font-medium">No Listings Found</h3>
+        <h3 className="mb-1 font-medium">Aucune annonce trouvée</h3>
         <p className="text-center text-sm text-muted-foreground">
-          Try adjusting your filters or search terms
+          Essayez de modifier vos filtres ou votre recherche
         </p>
       </div>
     )

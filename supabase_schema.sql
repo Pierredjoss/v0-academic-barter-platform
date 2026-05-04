@@ -195,6 +195,42 @@ CREATE INDEX IF NOT EXISTS idx_exchanges_listing_id ON exchanges(listing_id);
 CREATE INDEX IF NOT EXISTS idx_exchanges_status ON exchanges(status);
 
 -- =====================================================
+-- 9. NOTIFICATIONS TABLE
+-- =====================================================
+CREATE TABLE IF NOT EXISTS notifications (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    recipient_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+    actor_id UUID REFERENCES profiles(id) ON DELETE SET NULL,
+    type TEXT NOT NULL,
+    data JSONB NOT NULL DEFAULT '{}'::jsonb,
+    read_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_notifications_recipient_id ON notifications(recipient_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_created_at ON notifications(created_at DESC);
+
+-- =====================================================
+-- 10. PAYMENTS TABLE
+-- =====================================================
+CREATE TABLE IF NOT EXISTS payments (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
+    listing_id UUID REFERENCES listings(id) ON DELETE SET NULL,
+    amount INTEGER NOT NULL CHECK (amount > 0),
+    currency TEXT NOT NULL DEFAULT 'XOF',
+    status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'completed', 'failed', 'refunded')),
+    provider TEXT NOT NULL DEFAULT 'manual',
+    provider_payment_id TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_payments_user_id ON payments(user_id);
+CREATE INDEX IF NOT EXISTS idx_payments_listing_id ON payments(listing_id);
+CREATE INDEX IF NOT EXISTS idx_payments_status ON payments(status);
+
+-- =====================================================
 -- ROW LEVEL SECURITY (RLS) POLICIES
 -- =====================================================
 
@@ -206,6 +242,8 @@ ALTER TABLE conversations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE conversation_participants ENABLE ROW LEVEL SECURITY;
 ALTER TABLE messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE exchanges ENABLE ROW LEVEL SECURITY;
+ALTER TABLE notifications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE payments ENABLE ROW LEVEL SECURITY;
 
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('listing-images', 'listing-images', true)
@@ -351,6 +389,44 @@ DROP POLICY IF EXISTS "Involved users can update exchanges" ON exchanges;
 CREATE POLICY "Involved users can update exchanges"
     ON exchanges FOR UPDATE
     USING (auth.uid() = giver_id OR auth.uid() = receiver_id);
+
+DROP POLICY IF EXISTS "Users can view own notifications" ON notifications;
+CREATE POLICY "Users can view own notifications"
+    ON notifications FOR SELECT
+    USING (auth.uid() = recipient_id);
+
+DROP POLICY IF EXISTS "Users can update own notifications" ON notifications;
+CREATE POLICY "Users can update own notifications"
+    ON notifications FOR UPDATE
+    USING (auth.uid() = recipient_id);
+
+DROP POLICY IF EXISTS "Authenticated can insert notifications" ON notifications;
+CREATE POLICY "Authenticated can insert notifications"
+    ON notifications FOR INSERT
+    WITH CHECK (auth.role() = 'authenticated' AND (actor_id IS NULL OR actor_id = auth.uid()));
+
+-- Trigger to auto-update payments updated_at
+DROP TRIGGER IF EXISTS update_payments_updated_at ON payments;
+CREATE TRIGGER update_payments_updated_at
+    BEFORE UPDATE ON payments
+    FOR EACH ROW
+    EXECUTE FUNCTION update_updated_at_column();
+
+-- Payments: Users can view/manage their own payments
+DROP POLICY IF EXISTS "Users can view own payments" ON payments;
+CREATE POLICY "Users can view own payments"
+    ON payments FOR SELECT
+    USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can insert own payments" ON payments;
+CREATE POLICY "Users can insert own payments"
+    ON payments FOR INSERT
+    WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "Users can update own payments" ON payments;
+CREATE POLICY "Users can update own payments"
+    ON payments FOR UPDATE
+    USING (auth.uid() = user_id);
 
 -- =====================================================
 -- FUNCTION: Auto-create profile on user signup

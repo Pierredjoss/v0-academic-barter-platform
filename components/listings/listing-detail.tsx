@@ -38,16 +38,16 @@ const categoryIcons: Record<string, React.ElementType> = {
 }
 
 const conditionLabels: Record<string, string> = {
-  new: "New",
-  like_new: "Like New",
-  good: "Good",
-  fair: "Fair",
+  new: "Neuf",
+  like_new: "Comme neuf",
+  good: "Bon",
+  fair: "Correct",
 }
 
 const exchangeTypeLabels: Record<string, string> = {
-  in_person: "In Person",
-  delivery: "Delivery",
-  both: "In Person or Delivery",
+  in_person: "En personne",
+  delivery: "Livraison",
+  both: "En personne ou livraison",
 }
 
 interface ListingDetailProps {
@@ -86,20 +86,100 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
   const router = useRouter()
   const [isFavorited, setIsFavorited] = useState(initialFavorited)
   const [loading, setLoading] = useState(false)
+  const [exchangeLoading, setExchangeLoading] = useState(false)
 
   const CategoryIcon = categoryIcons[listing.categories?.icon || "package"] || Package
   const hasImages = listing.images && listing.images.length > 0
 
   const timeAgo = (date: string) => {
     const seconds = Math.floor((new Date().getTime() - new Date(date).getTime()) / 1000)
-    if (seconds < 60) return "Just now"
+    if (seconds < 60) return "À l'instant"
     const minutes = Math.floor(seconds / 60)
-    if (minutes < 60) return `${minutes} minute${minutes > 1 ? "s" : ""} ago`
+    if (minutes < 60) return `Il y a ${minutes} minute${minutes > 1 ? "s" : ""}`
     const hours = Math.floor(minutes / 60)
-    if (hours < 24) return `${hours} hour${hours > 1 ? "s" : ""} ago`
+    if (hours < 24) return `Il y a ${hours} heure${hours > 1 ? "s" : ""}`
     const days = Math.floor(hours / 24)
-    if (days < 7) return `${days} day${days > 1 ? "s" : ""} ago`
+    if (days < 7) return `Il y a ${days} jour${days > 1 ? "s" : ""}`
     return new Date(date).toLocaleDateString()
+  }
+
+  const handleProposeExchange = async () => {
+    if (exchangeLoading) return
+    setExchangeLoading(true)
+
+    try {
+      const supabase = createClient()
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
+
+      if (userError) {
+        throw userError
+      }
+
+      if (!user) {
+        router.push("/auth/login")
+        return
+      }
+
+      if (!listing?.profiles?.id) {
+        throw new Error("Impossible d'identifier le propriétaire de l'annonce")
+      }
+
+      if (listing.profiles.id === user.id) {
+        throw new Error("Vous ne pouvez pas proposer un échange sur votre propre annonce")
+      }
+
+      const { data: existingExchange, error: existingExchangeError } = await supabase
+        .from("exchanges")
+        .select("id, status")
+        .eq("listing_id", listing.id)
+        .eq("giver_id", user.id)
+        .eq("receiver_id", listing.profiles.id)
+        .in("status", ["pending"])
+        .maybeSingle()
+
+      if (existingExchangeError) {
+        throw existingExchangeError
+      }
+
+      if (existingExchange) {
+        throw new Error("Vous avez déjà une demande d'échange en cours pour cette annonce")
+      }
+
+      const { data: insertedExchange, error: insertExchangeError } = await supabase
+        .from("exchanges")
+        .insert({
+          giver_id: user.id,
+          receiver_id: listing.profiles.id,
+          listing_id: listing.id,
+          status: "pending",
+        })
+        .select("id")
+        .single()
+
+      if (insertExchangeError) {
+        throw insertExchangeError
+      }
+
+      await supabase
+        .from("notifications")
+        .insert({
+          recipient_id: listing.profiles.id,
+          actor_id: user.id,
+          type: "exchange_proposed",
+          data: {
+            exchange_id: insertedExchange?.id,
+            listing_id: listing.id,
+            listing_title: listing.title,
+          },
+        })
+
+      router.refresh()
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Une erreur inattendue s'est produite"
+      console.error(message)
+    } finally {
+      setExchangeLoading(false)
+    }
   }
 
   const handleFavorite = async () => {
@@ -133,7 +213,7 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
       <div className="flex items-center justify-between">
         <Button variant="ghost" size="sm" onClick={() => router.back()} className="gap-1">
           <ArrowLeft className="h-4 w-4" />
-          Back
+          Retour
         </Button>
         <div className="flex gap-2">
           <Button variant="outline" size="icon" onClick={handleFavorite} disabled={loading}>
@@ -177,7 +257,7 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
               style={{ backgroundColor: listing.categories?.color || "#6366f1" }}
             >
               <CategoryIcon className="h-4 w-4" />
-              {listing.categories?.name_fr || "Other"}
+              {listing.categories?.name_fr || "Autre"}
             </div>
           </div>
 
@@ -214,7 +294,7 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
             <div className="flex items-center gap-4 border-t border-border pt-4 text-sm text-muted-foreground">
               <span className="flex items-center gap-1">
                 <Eye className="h-4 w-4" />
-                {listing.views} views
+                {listing.views} vues
               </span>
               <span className="flex items-center gap-1">
                 <Calendar className="h-4 w-4" />
@@ -233,14 +313,14 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
                 {listing.profiles?.full_name?.charAt(0) || "?"}
               </div>
               <div>
-                <p className="font-semibold">{listing.profiles?.full_name || "Unknown"}</p>
+                <p className="font-semibold">{listing.profiles?.full_name || "Utilisateur"}</p>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
                     {listing.profiles?.average_rating?.toFixed(1) || "0.0"}
                   </span>
                   <span>&bull;</span>
-                  <span>{listing.profiles?.total_exchanges || 0} exchanges</span>
+                  <span>{listing.profiles?.total_exchanges || 0} échanges</span>
                 </div>
               </div>
             </div>
@@ -260,14 +340,18 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
             )}
 
             {!isOwner && (
-              <Button className="w-full gap-2" disabled variant="outline">
-                <span className="text-muted-foreground">Contact (bientôt)</span>
+              <Button
+                className="w-full gap-2"
+                onClick={handleProposeExchange}
+                disabled={exchangeLoading || !currentUserId}
+              >
+                {exchangeLoading ? "Envoi..." : "Proposer un échange"}
               </Button>
             )}
 
             {isOwner && (
               <p className="text-center text-sm text-muted-foreground">
-                This is your listing
+                Ceci est votre annonce
               </p>
             )}
           </div>
@@ -276,7 +360,7 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
           {!isOwner && (
             <Button variant="ghost" className="w-full gap-2 text-muted-foreground">
               <Flag className="h-4 w-4" />
-              Report Listing
+              Signaler l'annonce
             </Button>
           )}
         </div>

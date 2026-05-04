@@ -1,6 +1,8 @@
 "use client"
 
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { motion } from "framer-motion"
 import { 
   MapPin, 
@@ -9,10 +11,12 @@ import {
   Calendar,
   Settings,
   Plus,
-  ArrowRight
+  ArrowRight,
+  LogOut
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ListingCard } from "@/components/listings/listing-card"
+import { createClient } from "@/lib/supabase/client"
 
 interface Profile {
   id: string
@@ -52,6 +56,23 @@ interface ProfileViewProps {
 }
 
 export function ProfileView({ profile, listings, listingsCount, reviews }: ProfileViewProps) {
+  const router = useRouter()
+  const [signingOut, setSigningOut] = useState(false)
+
+  const handleSignOut = async () => {
+    setSigningOut(true)
+    try {
+      const supabase = createClient()
+      await supabase.auth.signOut()
+      router.push("/")
+      router.refresh()
+    } catch {
+      // Silent fail
+    } finally {
+      setSigningOut(false)
+    }
+  }
+
   const memberSince = profile?.created_at
     ? new Date(profile.created_at).toLocaleDateString("fr-FR", {
         month: "long",
@@ -81,12 +102,26 @@ export function ProfileView({ profile, listings, listingsCount, reviews }: Profi
           </div>
 
           {/* Actions */}
-          <div className="flex justify-end pt-4">
+          <div className="flex justify-end gap-2 pt-4">
             <Button variant="outline" size="sm" asChild className="gap-1">
               <Link href="/settings">
                 <Settings className="h-4 w-4" />
                 Modifier le Profil
               </Link>
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-1 border-destructive/50 text-destructive hover:bg-destructive/10 hover:text-destructive"
+              onClick={handleSignOut}
+              disabled={signingOut}
+            >
+              {signingOut ? (
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+              ) : (
+                <LogOut className="h-4 w-4" />
+              )}
+              Déconnexion
             </Button>
           </div>
 

@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Search, SlidersHorizontal, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
@@ -44,6 +45,33 @@ interface ExploreFiltersProps {
 export function ExploreFilters({ categories, currentParams }: ExploreFiltersProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
+  const [searchValue, setSearchValue] = useState(currentParams.search || "")
+
+  // Debounce search updates (400ms)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const currentSearch = searchParams.get("search") || ""
+      if (searchValue !== currentSearch) {
+        const params = new URLSearchParams(searchParams.toString())
+        if (searchValue) {
+          params.set("search", searchValue)
+        } else {
+          params.delete("search")
+        }
+        router.push(`/explore?${params.toString()}`)
+      }
+    }, 400)
+
+    return () => clearTimeout(timer)
+  }, [searchValue, searchParams, router])
+
+  // Sync with URL changes (back/forward navigation)
+  useEffect(() => {
+    const urlSearch = searchParams.get("search") || ""
+    if (urlSearch !== searchValue) {
+      setSearchValue(urlSearch)
+    }
+  }, [searchParams.get("search")])
 
   const updateParams = (key: string, value: string | null) => {
     const params = new URLSearchParams(searchParams.toString())
@@ -56,6 +84,7 @@ export function ExploreFilters({ categories, currentParams }: ExploreFiltersProp
   }
 
   const clearFilters = () => {
+    setSearchValue("")
     router.push("/explore")
   }
 
@@ -71,15 +100,8 @@ export function ExploreFilters({ categories, currentParams }: ExploreFiltersProp
             type="search"
             placeholder="Rechercher des annonces..."
             className="h-11 pl-10"
-            defaultValue={currentParams.search}
-            onChange={(e) => {
-              const value = e.target.value
-              if (value) {
-                updateParams("search", value)
-              } else {
-                updateParams("search", null)
-              }
-            }}
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
           />
         </div>
         <Button variant="outline" size="icon" className="h-11 w-11">

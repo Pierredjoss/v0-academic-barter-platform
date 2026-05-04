@@ -5,23 +5,23 @@ import { Star, Quote } from "lucide-react"
 
 const testimonials = [
   {
-    content: "J’ai économisé plus de 25 000 FCFA ce semestre en échangeant des manuels via ɖyɔ̌. La plateforme a rendu si facile la connexion avec d’autres étudiants.",
+    content: "J’ai économisé plus de 25 000 FCFA ce semestre en échangeant des manuels via ɖyɔ̌. La plateforme a rendu si facile la connexion avec d’autres utilisateurs.",
     author: "Aminata K.",
-    role: "Étudiante en Médecine",
+    role: "Utilisatrice en Médecine",
     university: "Université de Lomé",
     rating: 5,
   },
   {
-    content: "En tant qu’étudiant en ingénierie, les matériaux de labo sont chers. ɖyɔ̌ m’a aidé à trouver tout ce dont j’avais  besoin auprès des anciens qui avaient déjà terminé les cours.",
+    content: "En tant qu’utilisateur en ingénierie, les matériaux de labo sont chers. ɖyɔ̌ m’a aidé à trouver tout ce dont j’avais besoin auprès des anciens qui avaient déjà terminé les cours.",
     author: "Kofi M.",
-    role: "Étudiant en Ingénierie",
+    role: "Utilisateur en Ingénierie",
     university: "KNUST",
     rating: 5,
   },
   {
     content: "La fonction de localisation est incroyable ! J’ai trouvé quelqu’un de mon propre campus en quelques minutes. Nous nous sommes rencontrés à la bibliothèque et avons  échangé des notes.",
     author: "Fatou D.",
-    role: "Étudiante en Droit",
+    role: "Utilisatrice en Droit",
     university: "Université Cheikh Anta Diop",
     rating: 5,
   },
@@ -43,11 +43,11 @@ export function LandingTestimonials() {
         >
           <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
             Adoré par les{" "}
-            <span className="gradient-text">Étudiants</span>
+            <span className="gradient-text">Utilisateurs</span>
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-            Rejoignez des milliers d&apos;étudiants qui économisent déjà de l&apos;argent 
-            et créent des connexions grâce à ɖyɔ̌.
+            Rejoignez des milliers d&apos;utilisateurs qui économisent déjà de l&apos;argent 
+            en échangeant des ressources académiques sur ɖyɔ̌.
           </p>
         </motion.div>
 

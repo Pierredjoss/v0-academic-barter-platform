@@ -109,7 +109,7 @@ export function LandingHero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mt-4 max-w-xl px-4 text-base leading-relaxed text-muted-foreground sm:mt-6 sm:max-w-2xl sm:px-0 sm:text-lg md:text-xl"
           >
-            Connectez-vous avec des étudiants près de chez vous pour troquer des ressources académiques. Articles, notes,
+            Connectez-vous avec des utilisateurs près de chez vous pour troquer des ressources académiques. Articles, notes,
             matériels.
           </motion.p>
 
@@ -151,11 +151,11 @@ export function LandingHero() {
           >
             {[
               { icon: BookOpen, value: "1K+", label: "Ressources" },
-              { icon: Users, value: "500+", label: "Étudiants" },
+              { icon: Users, value: "500+", label: "Utilisateurs" },
               { icon: MapPin, value: "20+", label: "Universités" },
             ].map((stat, index) => (
               <motion.div 
-                key={index} 
+                key={stat.label}
                 className="flex flex-col items-center gap-1.5 sm:gap-2"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 300 }}

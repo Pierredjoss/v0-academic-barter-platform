@@ -6,7 +6,7 @@ export default function AboutPage() {
       <div className="mt-8 space-y-4 text-muted-foreground">
         <h2 className="text-xl font-semibold text-foreground">Notre Vision</h2>
         <p>
-          Le savoir est la seule ressource qui se multiplie quand on la partage. Pourtant, pour de nombreux étudiants,
+          Le savoir est la seule ressource qui se multiplie quand on la partage. Pourtant, pour de nombreux utilisateurs,
           l’accès aux outils pédagogiques — livres spécialisés, notes de cours structurées ou matériel technique — reste
           un défi financier majeur. ɖyɔ̌ (prononcé djo) est né de cette volonté de briser les barrières économiques.
           Inspirés par les valeurs ancestrales du troc, nous avons créé une plateforme moderne où l'entraide remplace la
@@ -16,7 +16,7 @@ export default function AboutPage() {
         <h2 className="text-xl font-semibold text-foreground">Pourquoi "ɖyɔ̌" ?</h2>
         <p>
           Le nom de notre plateforme n'est pas choisi au hasard. En langue Fon, ɖyɔ̌ signifie "changer" ou "échanger".
-          C’est un rappel de nos racines béninoises et de notre ambition : transformer la manière dont les étudiants
+          C’est un rappel de nos racines béninoises et de notre ambition : transformer la manière dont les utilisateurs
           africains consomment et partagent la connaissance. Nous croyons en une éducation circulaire où rien ne se
           perd, tout se transmet.
         </p>
@@ -31,7 +31,7 @@ export default function AboutPage() {
             graphique.
           </li>
           <li>
-            La Solidarité Communautaire : Nous connectons des milliers d'étudiants issus de différentes facultés et
+            La Solidarité Communautaire : Nous connectons des milliers d'utilisateurs issus de différentes facultés et
             horizons pour créer un réseau de soutien mutuel robuste.
           </li>
         </ul>
