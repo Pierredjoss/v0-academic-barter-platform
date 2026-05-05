@@ -12,7 +12,7 @@ const testimonials = [
     rating: 5,
   },
   {
-    content: "En tant qu’utilisateur en ingénierie, les matériaux de labo sont chers. ɖyɔ̌ m’a aidé à trouver tout ce dont j’avais besoin auprès des anciens qui avaient déjà terminé les cours.",
+    content: "En tant qu’étudiant en ingénierie, les matériaux de labo sont chers. ɖyɔ̌ m’a aidé à trouver tout ce dont j’avais besoin auprès des anciens qui avaient déjà terminé les cours.",
     author: "Kofi M.",
     role: "Utilisateur en Ingénierie",
     university: "KNUST",
@@ -22,7 +22,7 @@ const testimonials = [
     content: "La fonction de localisation est incroyable ! J’ai trouvé quelqu’un de mon propre campus en quelques minutes. Nous nous sommes rencontrés à la bibliothèque et avons  échangé des notes.",
     author: "Fatou D.",
     role: "Utilisatrice en Droit",
-    university: "Université Cheikh Anta Diop",
+    university: "Utilisateur Cheikh Anta Diop",
     rating: 5,
   },
 ]

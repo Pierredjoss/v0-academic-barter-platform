@@ -86,7 +86,7 @@ export function LandingHero() {
           >
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1.5 text-xs font-medium text-primary sm:px-4 sm:py-2 sm:text-sm">
               <Sparkles className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-              <span>Plateforme de Troc Académique Intelligente</span>
+              <span>Plateforme d'échange Académique Intelligente</span>
             </div>
           </motion.div>
 
@@ -109,7 +109,7 @@ export function LandingHero() {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mt-4 max-w-xl px-4 text-base leading-relaxed text-muted-foreground sm:mt-6 sm:max-w-2xl sm:px-0 sm:text-lg md:text-xl"
           >
-            Connectez-vous avec des utilisateurs près de chez vous pour troquer des ressources académiques. Articles, notes,
+            Connectez-vous avec des utilisateurs près de chez vous pour échanger des ressources académiques. Articles, notes,
             matériels.
           </motion.p>
 
