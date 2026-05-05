@@ -5,6 +5,7 @@ import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
+import { toast } from "sonner"
 import {
   ArrowLeft,
   Heart,
@@ -175,10 +176,12 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
           },
         })
 
+      toast.success("Demande d'échange envoyée !")
       router.refresh()
     } catch (err) {
       const message = err instanceof Error ? err.message : "Une erreur inattendue s'est produite"
       console.error(message)
+      toast.error(message)
     } finally {
       setExchangeLoading(false)
     }
@@ -280,10 +283,12 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
       }
 
       // Rediriger vers la page de conversation
+      toast.success("Conversation ouverte !")
       router.push(`/conversations/${conversationId}`)
     } catch (err) {
       const message = err instanceof Error ? err.message : "Une erreur inattendue s'est produite"
       console.error(message)
+      toast.error(message)
     } finally {
       setContactLoading(false)
     }

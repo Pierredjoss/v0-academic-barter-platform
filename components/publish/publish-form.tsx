@@ -267,7 +267,7 @@ export function PublishForm({ categories }: PublishFormProps) {
       {/* Title */}
       <div className="space-y-2">
         <label htmlFor="title" className="text-sm font-medium">
-          Titre <span className="text-destructive">*</span>
+          Titre
         </label>
         <Input
           id="title"
@@ -296,7 +296,7 @@ export function PublishForm({ categories }: PublishFormProps) {
       {/* Category */}
       <div className="space-y-2">
         <label className="text-sm font-medium">
-          Catégorie{categories.length > 0 && <span className="text-destructive">*</span>}
+          Catégorie
         </label>
         {categories.length === 0 ? (
           <div className="rounded-lg border border-border bg-muted/30 p-3 text-sm text-muted-foreground">
@@ -336,7 +336,7 @@ export function PublishForm({ categories }: PublishFormProps) {
       {/* Photos */}
       <div className="space-y-2">
         <label htmlFor="photos" className="text-sm font-medium">
-          Photos <span className="text-destructive">*</span>
+          Photos
         </label>
         <Input
           id="photos"
@@ -351,7 +351,7 @@ export function PublishForm({ categories }: PublishFormProps) {
       {/* Condition */}
       <div className="space-y-2">
         <label className="text-sm font-medium">
-          État <span className="text-destructive">*</span>
+          État
         </label>
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           {conditions.map((condition) => {

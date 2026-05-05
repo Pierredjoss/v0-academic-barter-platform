@@ -15,6 +15,7 @@ export default function SignUpPage() {
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
+    phone: "",
     university: "",
     city: "",
     password: "",
@@ -61,6 +62,7 @@ export default function SignUpPage() {
         options: {
           data: {
             full_name: formData.fullName,
+            phone: formData.phone,
             university: formData.university,
             city: formData.city,
           },
@@ -108,6 +110,7 @@ export default function SignUpPage() {
           {
             id: userId,
             full_name: formData.fullName,
+            phone: formData.phone,
             university: formData.university,
             city: formData.city,
             email: formData.email,
@@ -195,6 +198,22 @@ export default function SignUpPage() {
                   type="email"
                   placeholder="prenom.nom@gmail.com"
                   value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="h-12"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="phone" className="text-sm font-medium">
+                  Numéro MTN <span className="text-muted-foreground">(pour les paiements)</span>
+                </label>
+                <Input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  placeholder="ex: 96 12 34 56"
+                  value={formData.phone}
                   onChange={handleChange}
                   required
                   className="h-12"

@@ -26,11 +26,11 @@ export default async function ListingPage({ params }: ListingPageProps) {
     notFound()
   }
 
-  // Increment view count
-  await supabase
-    .from("listings")
-    .update({ views: (listing.views || 0) + 1 })
-    .eq("id", id)
+  // Increment view count (seulement si l'utilisateur n'est pas le propriétaire)
+  const isOwner = !!user && listing.user_id === user.id
+  if (!isOwner) {
+    await supabase.rpc("increment_listing_views", { listing_id: id })
+  }
 
   // Check if favorited
   const { data: favorite } = user
@@ -41,8 +41,6 @@ export default async function ListingPage({ params }: ListingPageProps) {
         .eq("listing_id", id)
         .single()
     : { data: null }
-
-  const isOwner = !!user && listing.user_id === user.id
 
   return (
     <ListingDetail 

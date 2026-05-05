@@ -122,22 +122,16 @@ export function MapView({ listings }: MapViewProps) {
                 animate={{ opacity: 1, y: 0 }}
                 className="rounded-xl border border-border bg-card p-4"
               >
-                <div className="mb-3 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
-                      <MapPin className="h-4 w-4 text-primary" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold">{city.name}</h3>
-                      <p className="text-xs text-muted-foreground">
-                        {city.count} annonce{city.count > 1 ? "s" : ""}
-                      </p>
-                    </div>
+                <div className="mb-3 flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+                    <MapPin className="h-4 w-4 text-primary" />
                   </div>
-                  <Button variant="ghost" size="sm" className="gap-1">
-                    <Navigation className="h-4 w-4" />
-                    Voir Tout
-                  </Button>
+                  <div>
+                    <h3 className="font-semibold">{city.name}</h3>
+                    <p className="text-xs text-muted-foreground">
+                      {city.count} annonce{city.count > 1 ? "s" : ""}
+                    </p>
+                  </div>
                 </div>
                 
                 {/* Listings preview */}

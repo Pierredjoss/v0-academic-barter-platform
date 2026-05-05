@@ -46,7 +46,7 @@ export default async function PublishPaymentPage({ searchParams }: PublishPaymen
           <span className="gradient-text">Microtaxe</span> de Publication
         </h1>
         <p className="text-muted-foreground">
-          Payez 50 FCFA pour publier votre annonce et la rendre visible
+          Payez 1 FCFA pour publier votre annonce et la rendre visible
         </p>
       </div>
 
