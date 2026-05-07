@@ -5,7 +5,7 @@ import { Star, Quote } from "lucide-react"
 
 const testimonials = [
   {
-    content: "J’ai économisé plus de 25 000 FCFA ce semestre en échangeant des manuels via ɖyɔ̌. La plateforme a rendu si facile la connexion avec d’autres utilisateurs.",
+    content: "J’ai économisé plus de 25 500 FCFA ce semestre en échangeant des manuels via ɖyɔ̌. La plateforme a rendu si facile la connexion avec d’autres utilisateurs.",
     author: "Aminata K.",
     role: "Etudiante en Médecine",
     university: "Université de Lomé",
