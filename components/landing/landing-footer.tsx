@@ -39,7 +39,7 @@ export function LandingFooter() {
           <div className="lg:col-span-2">
             <DyoLogo size="md" />
             <p className="mt-4 max-w-xs text-sm text-muted-foreground leading-relaxed">
-              La plateforme de troc académique intelligente connectant les étudiants 
+              La plateforme d'échange académique intelligente connectant les étudiants 
               à travers l&apos;Afrique pour échanger des ressources et des connaissances.
             </p>
             {/* Social links */}
