@@ -74,7 +74,7 @@ export function PaymentForm({ userId, listingId }: PaymentFormProps) {
       setTimeout(() => {
         router.push("/dashboard")
         router.refresh()
-      }, 2000)
+      }, 1500)
     } catch (err) {
       const message = err instanceof Error ? err.message : "Une erreur est survenue"
       console.error(message)
