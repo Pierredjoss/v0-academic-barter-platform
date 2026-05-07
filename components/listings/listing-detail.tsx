@@ -7,15 +7,10 @@ import { motion, AnimatePresence } from "framer-motion"
 import { createClient } from "@/lib/supabase/client"
 import { toast } from "sonner"
 import { 
-  ArrowLeft, Heart, Share2, MapPin, 
-  Clock, Shield, MessageCircle, 
-  Package, Phone, MessageSquare, 
-  AlertCircle, Check, Loader2, Flag, Star, GraduationCap
+  ArrowLeft, Package, Phone, Check, Loader2, Star
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Badge } from "@/components/ui/badge"
 
 interface ListingDetailProps {
   listing: any
@@ -127,9 +122,6 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
                   >
                     {loading ? <Loader2 className="animate-spin" /> : "Proposer un échange"}
                   </Button>
-                  <Button variant="outline" className="w-full h-12 gap-2">
-                    <MessageCircle className="h-5 w-5" /> Contacter
-                  </Button>
                 </motion.div>
               )}
 
@@ -198,7 +190,7 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
                 {listing.profiles?.full_name?.[0] || "?"}
               </div>
               <div>
-                <p className="font-bold">{listing.profiles?.full_name || "Utilisateur"}</p>
+                <p className="font-bold">{listing.profiles?.full_name || listing.profiles?.email || "Utilisateur"}</p>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
                   <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
                   {listing.profiles?.average_rating || "0.0"} • {listing.profiles?.university || "Étudiant"}
