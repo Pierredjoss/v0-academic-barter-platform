@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     apple: '/apple-icon.png',
   },
   openGraph: {
-    title: 'ɖyɔ̌ - Plateforme de Troc Académique',
+    title: 'ɖyɔ̌ - Plateforme d’Échange Académique',
     description: 'Échangez des ressources académiques intelligemment.',
     type: 'website',
   },

@@ -9,7 +9,7 @@ export default function AboutPage() {
           Le savoir est la seule ressource qui se multiplie quand on la partage. Pourtant, pour de nombreux utilisateurs,
           l’accès aux outils pédagogiques — livres spécialisés, notes de cours structurées ou matériel technique — reste
           un défi financier majeur. ɖyɔ̌ (prononcé djo) est né de cette volonté de briser les barrières économiques.
-          Inspirés par les valeurs ancestrales du troc, nous avons créé une plateforme moderne où l'entraide remplace la
+          Inspirés par les valeurs ancestrales de l'échange, nous avons créé une plateforme moderne où l'entraide remplace la
           transaction.
         </p>
 
@@ -24,7 +24,7 @@ export default function AboutPage() {
         <h2 className="text-xl font-semibold text-foreground">Ce que nous construisons</h2>
         <ul className="list-disc space-y-2 pl-5">
           <li>
-            Le Troc de Ressources : Un livre de physique contre un manuel d'économie ? C'est possible.
+            L'Échange de Ressources : Un livre de physique contre un manuel d'économie ? C'est possible.
           </li>
           <li>
             Le Partage de Compétences : Échangez une heure de tutorat en programmation contre une aide en design

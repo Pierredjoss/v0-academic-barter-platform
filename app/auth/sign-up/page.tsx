@@ -157,7 +157,7 @@ export default function SignUpPage() {
             <div className="mb-6 text-center">
               <h1 className="text-2xl font-bold">Créer un Compte</h1>
               <p className="mt-2 text-sm text-muted-foreground">
-                Rejoignez la communauté de troc académique
+                Rejoignez la communauté d'échange académique
               </p>
             </div>
 
