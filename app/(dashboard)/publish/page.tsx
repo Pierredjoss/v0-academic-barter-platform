@@ -49,13 +49,17 @@ export default async function PublishPage() {
     redirect("/auth/login")
   }
 
-  const { data: dbCategories } = await supabase
+  const { data: dbCategories, error: categoriesError } = await supabase
     .from("categories")
     .select("*")
     .order("name")
 
   // Utiliser les catégories de la base si elles existent, sinon utiliser les catégories par défaut
   const categories = dbCategories && dbCategories.length > 0 ? dbCategories : DEFAULT_CATEGORIES
+
+  if (categoriesError) {
+    console.warn("Impossible de charger les catégories :", categoriesError.message)
+  }
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">

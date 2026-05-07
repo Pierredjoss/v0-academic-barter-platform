@@ -16,6 +16,7 @@ export function PaymentForm({ userId, listingId }: PaymentFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   // MTN est la méthode par défaut et unique
   const selectedMethod = "mtn"
 
@@ -24,6 +25,7 @@ export function PaymentForm({ userId, listingId }: PaymentFormProps) {
     setLoading(true)
 
     try {
+      setError(null)
       const supabase = createClient()
 
       // Étape 1: Créer un paiement
@@ -76,6 +78,7 @@ export function PaymentForm({ userId, listingId }: PaymentFormProps) {
     } catch (err) {
       const message = err instanceof Error ? err.message : "Une erreur est survenue"
       console.error(message)
+      setError(message)
     } finally {
       setLoading(false)
     }
@@ -106,6 +109,11 @@ export function PaymentForm({ userId, listingId }: PaymentFormProps) {
       transition={{ duration: 0.5 }}
       className="space-y-6 rounded-2xl border border-border bg-card p-6"
     >
+      {error && (
+        <div className="rounded-lg bg-destructive/10 p-3 text-sm text-destructive">
+          {error}
+        </div>
+      )}
       {/* Détails du paiement */}
       <div className="space-y-4">
         <div className="flex items-center justify-between rounded-lg border border-border bg-muted/30 p-4">
