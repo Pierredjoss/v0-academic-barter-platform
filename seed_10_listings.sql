@@ -8,7 +8,7 @@
 -- First, ensure we have the categories (they should already exist from the fallback or schema)
 -- If categories don't exist, insert them
 INSERT INTO categories (id, name, name_fr, icon, color) VALUES
-    ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'livres-cours', 'Livres et Supports de Cours', 'book-open', '#3b82f6'),
+    ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1', 'livres-cours', 'Matétiels et Fournitures', 'tools', '#3b82f6'),
     ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2', 'manuels', 'Manuels Scolaires & Livres', 'graduation-cap', '#8b5cf6'),
     ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa3', 'annales', 'Annales & Sujets d''Examens', 'file-text', '#f59e0b'),
     ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa4', 'notes-fiches', 'Notes de Cours & Fiches de Révision', 'notebook-pen', '#10b981'),
