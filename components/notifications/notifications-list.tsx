@@ -130,6 +130,8 @@ export function NotificationsList({
           const data = isRecord(n.data) ? n.data : {}
           const listingId = getString(data, "listing_id")
           const listingTitle = getString(data, "listing_title")
+          const offeredListingTitle = getString(data, "offered_listing_title")
+          const phoneNumber = getString(data, "phone_number")
 
           const title =
             n.type === "exchange_proposed"
@@ -138,7 +140,7 @@ export function NotificationsList({
 
           const description =
             n.type === "exchange_proposed"
-              ? `Quelqu'un a proposé un échange sur votre annonce${listingTitle ? ` : ${listingTitle}` : ""}.`
+              ? `Proposition pour "${listingTitle || 'votre annonce'}" avec "${offeredListingTitle || 'une annonce'}". Contact: ${phoneNumber || 'N/A'}`
               : "Vous avez une nouvelle notification."
 
           const href = listingId ? `/listing/${listingId}` : "/dashboard"

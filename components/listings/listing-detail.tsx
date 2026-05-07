@@ -28,13 +28,12 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
   const router = useRouter()
   const [isFavorited, setIsFavorited] = useState(initialFavorited)
   const [loading, setLoading] = useState(false)
-  const [status, setStatus] = useState<'idle' | 'selecting' | 'sent'>('idle')
+  const [status, setStatus] = useState<'idle' | 'form' | 'sent'>('idle')
   
   // États pour le formulaire d'échange
   const [myListings, setMyListings] = useState<any[]>([])
-  const [selectedItems, setSelectedItems] = useState<string[]>([])
+  const [selectedListing, setSelectedListing] = useState<string>("")
   const [phone, setPhone] = useState("")
-  const [message, setMessage] = useState("")
 
   const fetchMyListings = async () => {
     if (!currentUserId) {
@@ -47,43 +46,41 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
       .from('listings')
       .select('*')
       .eq('user_id', currentUserId)
+      .eq('status', 'active')
     
     if (error) {
       toast.error("Erreur de chargement de vos articles")
     } else {
       setMyListings(data || [])
-      setStatus('selecting')
+      setStatus('form')
     }
     setLoading(false)
   }
 
   const handleSendOffer = async () => {
-    if (selectedItems.length === 0) return toast.error("Sélectionnez au moins un article")
+    if (!selectedListing) return toast.error("Sélectionnez une annonce à échanger")
     if (!phone.trim()) return toast.error("Le numéro de téléphone est obligatoire")
 
     setLoading(true)
     const supabase = createClient()
 
     try {
-      const { error: offerError } = await supabase.from('exchange_offers').insert({
-        sender_id: currentUserId,
-        receiver_id: listing.profiles?.id,
-        listing_id: listing.id,
-        offered_item_ids: selectedItems,
-        phone_number: phone,
-        message: message,
-        status: 'pending'
+      const selectedListingData = myListings.find(l => l.id === selectedListing)
+      
+      const { error: notifError } = await supabase.from('notifications').insert({
+        recipient_id: listing.profiles?.id,
+        actor_id: currentUserId,
+        type: 'exchange_proposed',
+        data: {
+          listing_id: listing.id,
+          listing_title: listing.title,
+          offered_listing_id: selectedListing,
+          offered_listing_title: selectedListingData?.title,
+          phone_number: phone
+        }
       })
 
-      if (offerError) throw offerError
-
-      await supabase.from('notifications').insert({
-        user_id: listing.profiles?.id,
-        title: "Nouvelle proposition d'échange !",
-        message: `Offre reçue pour "${listing.title}". Contact : ${phone}`,
-        type: "offer_received",
-        link: "/dashboard/offers"
-      })
+      if (notifError) throw notifError
 
       setStatus('sent')
       toast.success("Proposition envoyée !")
@@ -136,29 +133,23 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
                 </motion.div>
               )}
 
-              {status === 'selecting' && (
+              {status === 'form' && (
                 <motion.div 
-                  key="selecting"
+                  key="form"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   className="space-y-4 p-4 border-2 border-primary/20 rounded-2xl bg-primary/5"
                 >
                   <h4 className="font-bold flex items-center gap-2 underline text-primary">
-                    <Package className="h-4 w-4" /> Vos articles (Max 2)
+                    <Package className="h-4 w-4" /> Votre annonce à échanger
                   </h4>
                   <div className="grid gap-2 max-h-40 overflow-y-auto">
                     {myListings.map(item => (
                       <button
                         key={item.id}
-                        onClick={() => {
-                          if (selectedItems.includes(item.id)) {
-                            setSelectedItems(selectedItems.filter(id => id !== item.id))
-                          } else if (selectedItems.length < 2) {
-                            setSelectedItems([...selectedItems, item.id])
-                          }
-                        }}
+                        onClick={() => setSelectedListing(item.id)}
                         className={`text-left p-3 rounded-xl border-2 text-sm transition-all ${
-                          selectedItems.includes(item.id) ? "border-primary bg-primary/10" : "bg-white"
+                          selectedListing === item.id ? "border-primary bg-primary/10" : "bg-white"
                         }`}
                       >
                         {item.title}
@@ -168,7 +159,7 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
 
                   <div className="space-y-2">
                     <label className="text-sm font-bold flex items-center gap-2">
-                      <Phone className="h-4 w-4 text-primary" /> Ton Numéro *
+                      <Phone className="h-4 w-4 text-primary" /> Numéro de téléphone Béninois *
                     </label>
                     <Input 
                       placeholder="+229..." 
@@ -178,26 +169,14 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <label className="text-sm font-bold flex items-center gap-2">
-                      <MessageSquare className="h-4 w-4 text-primary" /> Message (Optionnel)
-                    </label>
-                    <Textarea 
-                      placeholder="Un petit mot ?" 
-                      value={message} 
-                      onChange={(e) => setMessage(e.target.value)}
-                      className="bg-white resize-none"
-                    />
-                  </div>
-
                   <div className="flex gap-2">
                     <Button variant="ghost" className="flex-1" onClick={() => setStatus('idle')}>Annuler</Button>
                     <Button 
                       className="flex-1 font-bold" 
                       onClick={handleSendOffer}
-                      disabled={loading || selectedItems.length === 0 || !phone}
+                      disabled={loading || !selectedListing || !phone}
                     >
-                      {loading ? <Loader2 className="animate-spin" /> : "Envoyer"}
+                      {loading ? <Loader2 className="animate-spin" /> : "Envoyer la proposition"}
                     </Button>
                   </div>
                 </motion.div>
@@ -205,8 +184,8 @@ export function ListingDetail({ listing, isFavorited: initialFavorited, isOwner,
 
               {status === 'sent' && (
                 <motion.div key="sent" initial={{ scale: 0.8 }} animate={{ scale: 1 }}>
-                  <Button disabled className="w-full h-14 bg-green-600 text-white font-bold text-lg">
-                    <Check className="mr-2 h-6 w-6" /> OFFRE ENVOYÉE
+                  <Button disabled className="w-full h-14 bg-green-600 hover:bg-green-600 text-white font-bold text-lg">
+                    <Check className="mr-2 h-6 w-6" /> FAIT
                   </Button>
                 </motion.div>
               )}
