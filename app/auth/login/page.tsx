@@ -156,6 +156,13 @@ export default function LoginPage() {
                 S&apos;inscrire
               </Link>
             </div>
+
+            <div className="mt-6 border-t border-border pt-6 text-center text-sm">
+              <p className="mb-2 text-muted-foreground">Administrateur ?</p>
+              <Link href="/auth/admin-login" className="font-medium text-primary hover:underline">
+                Connexion admin
+              </Link>
+            </div>
           </div>
 
           {/* Back to home */}

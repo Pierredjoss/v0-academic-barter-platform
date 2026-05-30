@@ -344,6 +344,13 @@ export default function SignUpPage() {
                 Se connecter
               </Link>
             </div>
+
+            <div className="mt-6 border-t border-border pt-6 text-center text-sm">
+              <p className="mb-2 text-muted-foreground">Demander l'accès administrateur ?</p>
+              <Link href="/auth/admin-signup" className="font-medium text-primary hover:underline">
+                Faire une demande
+              </Link>
+            </div>
           </div>
 
           {/* Back to home */}
