@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, Sparkles, Grid3X3, HelpCircle, MessageSquare, LogIn, Rocket, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DyoLogo } from "@/components/dyo-logo"
+import { AdminLoginModal } from "@/components/admin/admin-login-modal"
 
 const navLinks = [
   { href: "#features", label: "Fonctionnalités", icon: Sparkles },
@@ -17,6 +18,7 @@ const navLinks = [
 export function LandingHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [adminModalOpen, setAdminModalOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,13 +78,11 @@ export function LandingHeader() {
             </Button>
             <Button 
               variant="outline"
-              asChild 
+              onClick={() => setAdminModalOpen(true)}
               className="gap-2 rounded-xl px-4"
             >
-              <Link href="/auth/admin-login">
-                <Shield className="h-4 w-4" />
-                <span>Accès Admin</span>
-              </Link>
+              <Shield className="h-4 w-4" />
+              <span>Accès Admin</span>
             </Button>
             <Button 
               asChild 
@@ -172,13 +172,14 @@ export function LandingHeader() {
                 </Button>
                 <Button 
                   variant="outline"
-                  asChild 
+                  onClick={() => {
+                    setAdminModalOpen(true)
+                    setIsMenuOpen(false)
+                  }}
                   className="w-full justify-center gap-2 rounded-xl py-5"
                 >
-                  <Link href="/auth/admin-login">
-                    <Shield className="h-4 w-4" />
-                    <span>Accès Admin</span>
-                  </Link>
+                  <Shield className="h-4 w-4" />
+                  <span>Accès Admin</span>
                 </Button>
                 <Button 
                   asChild 
@@ -194,6 +195,11 @@ export function LandingHeader() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <AdminLoginModal 
+        isOpen={adminModalOpen}
+        onClose={() => setAdminModalOpen(false)}
+      />
     </header>
   )
 }
