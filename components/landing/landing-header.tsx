@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Sparkles, Grid3X3, HelpCircle, MessageSquare, LogIn, Rocket } from "lucide-react"
+import { Menu, X, Sparkles, Grid3X3, HelpCircle, MessageSquare, LogIn, Rocket, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DyoLogo } from "@/components/dyo-logo"
 
@@ -72,6 +72,16 @@ export function LandingHeader() {
               <Link href="/auth/login">
                 <LogIn className="h-4 w-4" />
                 <span>Connexion</span>
+              </Link>
+            </Button>
+            <Button 
+              variant="outline"
+              asChild 
+              className="gap-2 rounded-xl px-4"
+            >
+              <Link href="/auth/admin-login">
+                <Shield className="h-4 w-4" />
+                <span>Accès Admin</span>
               </Link>
             </Button>
             <Button 
@@ -158,6 +168,16 @@ export function LandingHeader() {
                   <Link href="/auth/login">
                     <LogIn className="h-4 w-4" />
                     <span>Connexion</span>
+                  </Link>
+                </Button>
+                <Button 
+                  variant="outline"
+                  asChild 
+                  className="w-full justify-center gap-2 rounded-xl py-5"
+                >
+                  <Link href="/auth/admin-login">
+                    <Shield className="h-4 w-4" />
+                    <span>Accès Admin</span>
                   </Link>
                 </Button>
                 <Button 
